@@ -17,9 +17,11 @@ public:
 
     int getId() const;
 
+protected:
 private:
     const std::string name;
     const int id;
+
 };
 
 
@@ -30,6 +32,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
 
     std::string toString() const;
+
 
 private:
 };
@@ -43,6 +46,7 @@ public:
 
     std::string toString() const;
 
+
 private:
 };
 
@@ -55,6 +59,7 @@ public:
 
     std::string toString() const;
 
+
 private:
 };
 
@@ -66,6 +71,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
 
     std::string toString() const;
+
 
 private:
 };
