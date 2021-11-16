@@ -41,9 +41,17 @@ Trainer *Studio::getTrainer(int tid) {
     // TODO: error if doesn't exist? return nullptr?
 }
 
+const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
+
 void Studio::start() {
     open = true;
     cout << "Studio is now open!" << endl;
+}
+
+void Studio::close() {
+    open = false;
+    clear();
+    cout << "Studio is now closed!" << endl;
 }
 
 // Rule of 5
@@ -94,9 +102,7 @@ const Studio &Studio::operator=(const Studio &other) {
 
 // move assignment operator
 const Studio &Studio::operator=(Studio &&other) {
-    if (trainers) delete[] trainers;
-    if (workout_options) delete[] workout_options;
-    if (actionsLog) delete[] actionsLog;
+    clear();
     trainers = other.trainers;
     workout_options = other.workout_options;
     actionsLog = other.actionsLog;
@@ -104,6 +110,12 @@ const Studio &Studio::operator=(Studio &&other) {
     other.workout_options = nullptr;
     other.actionsLog = nullptr;
 }
+
+vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
+
+const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
+
+const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
 
 void Studio::clear() {
     if (!trainers.empty()) {
@@ -114,7 +126,3 @@ void Studio::clear() {
     }
     workout_options.clear();
 }
-
-vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
-
-const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
