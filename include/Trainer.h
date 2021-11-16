@@ -24,6 +24,7 @@ public:
     void closeTrainer();
     int getSalary() const;
     bool isOpen();
+    int getAvailable();
 private:
     static int counter;
     int id;

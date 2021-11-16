@@ -41,6 +41,8 @@ Trainer *Studio::getTrainer(int tid) {
     // TODO: error if doesn't exist? return nullptr?
 }
 
+const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
+
 void Studio::start() {
     open = true;
     cout << "Studio is now open!" << endl;
@@ -100,25 +102,13 @@ const Studio &Studio::operator=(const Studio &other) {
 
 // move assignment operator
 const Studio &Studio::operator=(Studio &&other) {
-    if (trainers) delete[] trainers;
-    if (workout_options) delete[] workout_options;
-    if (actionsLog) delete[] actionsLog;
+    clear();
     trainers = other.trainers;
     workout_options = other.workout_options;
     actionsLog = other.actionsLog;
     other.trainers = nullptr;
     other.workout_options = nullptr;
     other.actionsLog = nullptr;
-}
-
-void Studio::clear() {
-    if (!trainers.empty()) {
-        for (Trainer *trainer: trainers) delete trainer;
-    }
-    if (!actionsLog.empty()) {
-        for (BaseAction *action: actionsLog) delete action;
-    }
-    workout_options.clear();
 }
 
 vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }

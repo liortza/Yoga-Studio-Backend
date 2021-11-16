@@ -44,7 +44,6 @@ Customer *Trainer::getCustomer(int id) {
         if (customerPtr->getId() == id) return customerPtr;
     }
     return nullptr;
-    //TODO: throw error if customer doesn't exist?
 }
 
 std::vector<Customer *> &Trainer::getCustomers() { return customersList; }
@@ -53,21 +52,28 @@ std::vector<OrderPair> &Trainer::getOrders() { return orderList; }
 
 void
 Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
-    //TODO: ??
+    for (int workout_id: workout_ids) {
+        OrderPair pair (customer_id, workout_options[workout_id]);
+        orderList.push_back(pair);
+    }
 }
 
 void Trainer::openTrainer() {
     open = true;
-    //TODO: update salary?
 }
 
 void Trainer::closeTrainer() {
     open = false;
     customersList.clear();
+    size = 0;
     orderList.clear();
+    for (const OrderPair& orderPair: orderList)
+        salary += orderPair.second.getPrice();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
 }
 
 int Trainer::getSalary() const { return salary; }
 
 bool Trainer::isOpen() { return open; }
+
+int Trainer::getAvailable() {return capacity - size;}
