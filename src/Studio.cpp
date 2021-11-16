@@ -46,6 +46,11 @@ void Studio::start() {
     cout << "Studio is now open!" << endl;
 }
 
+void Studio::close() {
+    open = false;
+
+}
+
 // Rule of 5
 // destructor
 Studio::~Studio() {

@@ -15,6 +15,7 @@ public:
     virtual ~Studio();
     Studio(const Studio &other)
     void start();
+    void close();
     int getNumOfTrainers() const;
     Trainer* getTrainer(int tid);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
@@ -22,6 +23,7 @@ public:
     const Studio& operator=(const Sudio &other);
     const Studio& operator=(Studio&& other);
     const std::vector<Trainer *>& getTrainers();
+    void clear();
 
 private:
     bool open;
