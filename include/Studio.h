@@ -14,15 +14,14 @@ public:
     Studio(const std::string &configFilePath);
     virtual ~Studio();
     Studio(const Studio &other)
+    const Studio& operator=(const Sudio &other);
+    const Studio& operator=(Studio&& other);
     void start();
     void close();
     int getNumOfTrainers() const;
     Trainer* getTrainer(int tid);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
-    const Studio& operator=(const Sudio &other);
-    const Studio& operator=(Studio&& other);
-    const std::vector<Trainer *>& getTrainers();
 
 private:
     bool open;
