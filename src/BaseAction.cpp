@@ -5,6 +5,7 @@ using namespace std;
 BaseAction::BaseAction() {
     errorMsg = nullptr;
     // status = ??
+    // kjsldf
 }
 
 ActionStatus BaseAction::getStatus() const {return status;}
