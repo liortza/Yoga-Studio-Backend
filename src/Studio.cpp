@@ -48,7 +48,8 @@ void Studio::start() {
 
 void Studio::close() {
     open = false;
-
+    clear();
+    cout << "Studio is now closed!" << endl;
 }
 
 // Rule of 5
@@ -108,3 +109,13 @@ vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
 
 const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
+
+void Studio::clear() {
+    if (!trainers.empty()) {
+        for (Trainer *trainer: trainers) delete trainer;
+    }
+    if (!actionsLog.empty()) {
+        for (BaseAction *action: actionsLog) delete action;
+    }
+    workout_options.clear();
+}

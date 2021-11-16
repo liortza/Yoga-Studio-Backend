@@ -23,13 +23,13 @@ public:
     const Studio& operator=(const Sudio &other);
     const Studio& operator=(Studio&& other);
     const std::vector<Trainer *>& getTrainers();
-    void clear();
 
 private:
     bool open;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
+    void clear();
 };
 
 #endif
