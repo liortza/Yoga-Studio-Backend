@@ -16,7 +16,6 @@ public:
     Studio(const Studio &other)
     const Studio& operator=(const Sudio &other);
     const Studio& operator=(Studio&& other);
-    void clear();
     void start();
     int getNumOfTrainers() const;
     Trainer* getTrainer(int tid);
@@ -28,6 +27,7 @@ private:
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
+    void clear();
 };
 
 #endif
