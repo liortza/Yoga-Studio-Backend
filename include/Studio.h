@@ -21,6 +21,7 @@ public:
     std::vector<Workout>& getWorkoutOptions();
     const Studio& operator=(const Sudio &other);
     const Studio& operator=(Studio&& other);
+    const std::vector<Trainer *>& getTrainers();
 
 private:
     bool open;

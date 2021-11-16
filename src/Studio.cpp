@@ -101,3 +101,5 @@ const Studio &Studio::operator=(Studio &&other) {
 vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
+
+const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
