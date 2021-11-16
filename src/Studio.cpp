@@ -49,36 +49,43 @@ void Studio::start() {
 // Rule of 5
 // destructor
 Studio::~Studio() {
-    //if (trainers) delete[] trainers;
-    //if (actionsLog) delete[] actionsLog;
-    // TODO: how to check if vector is not null?
-    //if(workout_options) delete[] workout_options; - vector of values (not pointers) --> deleted by default destructor of vector?
+    if (!trainers.empty()) {
+        for (Trainer *trainer: trainers) delete trainer;
+    }
+    if (!actionsLog.empty()) {
+        for (BaseAction *action: actionsLog) delete action;
+    }
 }
 
 // copy constructor
 Studio::Studio(const Studio &other) {
-    //TODO: implement copy constructor
     open = other.open;
-    //trainers = other.
-    //workout_options = other.
+    for (Trainer *trainerPtr: other.trainers) { // deep copy
+        Trainer *myTrainer = new Trainer(&trainerPtr); // call Trainer copy constructor
+        trainers.push_back(myTrainer);
+    }
+    workout_options = other.workout_options; // assignment operator
+    for (BaseAction *action: other.actionsLog) {
+        BaseAction *myAction(action);
+        actionsLog.push_back(myAction);
+    }
 }
 
 // assignment operator
 const Studio &Studio::operator=(const Studio &other) {
     if (this != &other) {
+        clear();
         open = other.open;
-        if (trainers) delete[] trainers;
-        if (workout_options) delete[] workout_options;
-        if (actionsLog) delete[] actionsLog;
 
         // deep copy trainers
         for (int i = 0; i < other.getNumOfTrainers(); i++) {
-            trainers.push_back(new Trainer(other.trainers[i])); // use class Trainer's copy constructor (returns pointer??)
+            trainers.push_back(
+                    new Trainer(other.trainers[i])); // use class Trainer's copy constructor (returns pointer??)
         }
         for (int i = 0; i < other.workout_options.size(); i++) {
             workout_options.push_back(other.workout_options[i]);
         }
-        for (int i=0; i<other.actionsLog.size();i++){
+        for (int i = 0; i < other.actionsLog.size(); i++) {
             actionsLog.push_back(new BaseAction(other.actionsLog[i]));
         }
     }
@@ -96,6 +103,16 @@ const Studio &Studio::operator=(Studio &&other) {
     other.trainers = nullptr;
     other.workout_options = nullptr;
     other.actionsLog = nullptr;
+}
+
+void Studio::clear() {
+    if (!trainers.empty()) {
+        for (Trainer *trainer: trainers) delete trainer;
+    }
+    if (!actionsLog.empty()) {
+        for (BaseAction *action: actionsLog) delete action;
+    }
+    workout_options.clear();
 }
 
 vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }

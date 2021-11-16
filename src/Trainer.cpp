@@ -63,8 +63,8 @@ void Trainer::openTrainer() {
 
 void Trainer::closeTrainer() {
     open = false;
-//    customersList = nullptr;
-//    orderList = nullptr;
+    customersList.clear();
+    orderList.clear();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
 }
 
