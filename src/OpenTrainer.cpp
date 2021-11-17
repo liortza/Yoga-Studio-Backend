@@ -20,8 +20,6 @@ void OpenTrainer::act(Studio &studio) {
             vector<int> workout_ids=customer->order(workout_options);
             trainer->order(customer->getId(),workout_ids,workout_options);
             //TODO: order may b in BaseAction-order
-            //todo::add type enum field to customer
-            cout<<customer->getName()<<endl;
             }
         }
 
@@ -30,5 +28,5 @@ void OpenTrainer::act(Studio &studio) {
 
 
 std::string OpenTrainer::toString() const {
-
+//
 }
