@@ -14,6 +14,9 @@ public:
     std::string getName() const;
     int getPrice() const;
     WorkoutType getType() const;
+    // TODO: Or Dinary consult
+    //static bool expensiveThan(Workout *const wk1Ptr, Workout *const &wk2Ptr);
+    static bool expensiveThan(Workout const &wk1, Workout const &wk2);
 private:
 	const int id;
     const std::string name;
