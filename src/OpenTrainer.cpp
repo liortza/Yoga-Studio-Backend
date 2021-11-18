@@ -6,7 +6,7 @@ using namespace std;
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList): trainerId(id), customers(customersList) {
 
 }
-//distractor
+//destructor
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer=studio.getTrainer(trainerId);
