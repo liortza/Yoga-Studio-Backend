@@ -12,4 +12,11 @@ void Close::act(Studio &studio) {
         trainer->closeTrainer();
         BaseAction::complete();
     }
+    studio.addAction(this);
+}
+
+std::string Close::toString() const {
+    if (getStatus() == COMPLETED)
+        return "close " + to_string(trainerId) + " Completed";
+    else return "close " + to_string(trainerId) + " Error: " + getErrorMsg();
 }

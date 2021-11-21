@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Order::Order(int id): trainerId(id) {}
+Order::Order(int id) : trainerId(id) {}
 
 void Order::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
@@ -13,12 +13,17 @@ void Order::act(Studio &studio) {
         vector<int> workout_ids;
 
         // place order per each customer in trainer
-        for (Customer *customer: trainer->getCustomers())
-            customer->order(workoutOptions);
+        for (Customer *customer: trainer->getCustomers()) {
+            workout_ids = customer->order(workoutOptions);
+            trainer->order(customer->getId(), workout_ids, workoutOptions);
+        }
         BaseAction::complete();
     }
+    studio.addAction(this);
 }
 
 std::string Order::toString() const {
-    // TODO:
+    if (getStatus() == COMPLETED)
+        return "order " + to_string(trainerId) + " Completed";
+    else return "order " + to_string(trainerId) + " Error: " + getErrorMsg();
 }

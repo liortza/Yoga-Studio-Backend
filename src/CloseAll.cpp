@@ -8,14 +8,14 @@ CloseAll::CloseAll() {}
 void CloseAll::act(Studio &studio) {
     for (Trainer *trainer:studio.getTrainers()) { // is this foreach by increasing id order??
         if (trainer->isOpen()) { // TODO: update in forum, maybe change to all trainers
-            Close(trainer->getId()).act(studio);
-            // trainer->closeTrainer(); // which one is better?
+            trainer->closeTrainer();
         }
     }
-    // TODO: how to close all open workout sessions?
+    BaseAction::complete();
+    studio.addAction(this); // TODO: needed?
     studio.close();
 }
 
 std::string CloseAll::toString() const {
-    // TODO: what to put here? call from act because we need reference to studio?
+    return "closeall Completed";
 }
