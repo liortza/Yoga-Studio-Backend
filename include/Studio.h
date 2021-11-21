@@ -6,6 +6,7 @@
 #include "Workout.h"
 #include "Trainer.h"
 #include "Action.h"
+#include "BaseAction.h"
 
 
 class Studio{		
@@ -23,6 +24,7 @@ public:
     const std::vector<Trainer *>& getTrainers();
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
+    //void addAction()
 
 private:
     bool open;
