@@ -1,5 +1,6 @@
 #include "../include/Trainer.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -28,14 +29,13 @@ void Trainer::addCustomer(Customer *customer) {
 
 void Trainer::removeCustomer(int id) {
     // remove from customersList
-    for (Customer *customerPtr: customersList) {
-        if (customerPtr->getId() == id) {
+    
+    // remove from ordersList
+    for(OrderPair order:orderList){
+        if(order.first==id){
 
-            size--;
         }
     }
-
-    // remove from ordersList
     //TODO: delete element from middle of vector
 }
 
