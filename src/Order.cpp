@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Order::Order(int id): trainerId(id) {}
+Order::Order(int id) : trainerId(id) {}
 
 void Order::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
@@ -19,8 +19,11 @@ void Order::act(Studio &studio) {
         }
         BaseAction::complete();
     }
+    studio.addAction(this);
 }
 
 std::string Order::toString() const {
-    return "order " + to_string(trainerId) + " " + to_string(BaseAction::getStatus());
+    if (getStatus() == COMPLETED)
+        return "order " + to_string(trainerId) + " Completed";
+    else return "order " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
