@@ -41,7 +41,7 @@ Trainer *Studio::getTrainer(int tid) {
     // TODO: error if doesn't exist? return nullptr?
 }
 
-const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
+const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
 
 void Studio::start() {
     open = true;
@@ -115,7 +115,9 @@ vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
 
-const std::vector<Trainer *> &Studio::getTrainers() {return trainers;}
+void Studio::addAction(BaseAction *action) { actionsLog.push_back(action); }
+
+const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
 
 void Studio::clear() {
     if (!trainers.empty()) {

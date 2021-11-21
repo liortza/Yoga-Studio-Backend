@@ -12,9 +12,10 @@ void CloseAll::act(Studio &studio) {
         }
     }
     BaseAction::complete();
+    studio.addAction(this); // TODO: needed?
     studio.close();
 }
 
 std::string CloseAll::toString() const {
-    return "closeall" + to_string(BaseAction::getStatus());
+    return "closeall Completed";
 }

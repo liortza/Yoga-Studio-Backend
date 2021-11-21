@@ -1,5 +1,4 @@
 #include "../include/Action.h"
-#include "../include/Studio.h"
 
 using namespace std;
 
@@ -18,10 +17,12 @@ void OpenTrainer::act(Studio &studio) {
         for (Customer *customer: customers)
             trainer->addCustomer(customer);
     }
-
+    studio.addAction(this);
 }
 
 
 std::string OpenTrainer::toString() const {
-    return "open " + to_string(trainerId) + " " + to_string(BaseAction::getStatus());
+    if (getStatus() == COMPLETED)
+        return "open " + to_string(trainerId) + " Completed";
+    else return "open " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
