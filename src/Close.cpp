@@ -13,3 +13,7 @@ void Close::act(Studio &studio) {
         BaseAction::complete();
     }
 }
+
+std::string Close::toString() const {
+    return "close " + to_string(trainerId) + " " + to_string(BaseAction::getStatus());
+}

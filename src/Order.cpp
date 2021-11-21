@@ -13,12 +13,14 @@ void Order::act(Studio &studio) {
         vector<int> workout_ids;
 
         // place order per each customer in trainer
-        for (Customer *customer: trainer->getCustomers())
-            customer->order(workoutOptions);
+        for (Customer *customer: trainer->getCustomers()) {
+            workout_ids = customer->order(workoutOptions);
+            trainer->order(customer->getId(), workout_ids, workoutOptions);
+        }
         BaseAction::complete();
     }
 }
 
 std::string Order::toString() const {
-    // TODO:
+    return "order " + to_string(trainerId) + " " + to_string(BaseAction::getStatus());
 }
