@@ -30,8 +30,10 @@ private:
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
-    static customersCounter;
+    int customersCounter;
     void clear();
+
+    //region ACTIONS
     void openTrainer(std::vector<std::string> inputArgs);
     void orderTrainer(int id);
     void moveCustomer(std::vector<std::string> inputArgs);
@@ -42,6 +44,7 @@ private:
     void printActionsLog();
     void backupStudio();
     void restore();
+    //endregion
 };
 
 #endif

@@ -10,10 +10,6 @@
 
 using namespace std;
 
-//enum NextAction {
-//    OPEN, ORDER, MOVE, CLOSE, CLOSE_ALL, WORKOUT_OPTIONS, STATUS, LOG, BACKUP, RESTORE
-//};
-
 Studio::Studio(const string &configFilePath) {
     // extract file content to "nextLine" string
     /*ifstream myFile(configFilePath);
@@ -82,6 +78,7 @@ void Studio::start() {
 
         cin >> nextAction;
     }
+    closeAll();
 }
 
 void Studio::close() {
@@ -188,6 +185,12 @@ void Studio::openTrainer(std::vector<std::string> inputArgs) {
     actionsLog.push_back(openTrainer);
 }
 
+void Studio::orderTrainer(int id) {
+    BaseAction *orderTrainer = new Order(id);
+    orderTrainer->act(*this);
+    actionsLog.push_back(orderTrainer);
+}
+
 void Studio::moveCustomer(std::vector<std::string> inputArgs) {
     BaseAction *move = new MoveCustomer(stoi(inputArgs[0]), stoi(inputArgs[1]), stoi(inputArgs[2]));
     move->act(*this);
@@ -198,6 +201,12 @@ void Studio::closeTrainer(int id) {
     BaseAction *close = new Close(id);
     close->act(*this);
     actionsLog.push_back(close);
+}
+
+void Studio::closeAll() {
+    BaseAction *closeAll = new CloseAll();
+    closeAll->act(*this);
+    actionsLog.push_back(closeAll);
 }
 
 void Studio::printWorkoutOptions() {
