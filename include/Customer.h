@@ -19,7 +19,7 @@ public:
 
     bool getOrdered();
 
-    void setOrdered(bool isOrdered);
+    void setOrdered(bool set);
 
 protected:
 

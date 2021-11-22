@@ -8,9 +8,6 @@ int Customer::getId() const { return id; }
 
 bool Customer::getOrdered() { return isOrdered; }
 
-void Customer::setOrdered(bool isOrdered) {
-    if (isOrdered)
-        isOrdered = true;
-    else
-        isOrdered = false;
+void Customer::setOrdered(bool set) {
+    isOrdered=set;
 }
