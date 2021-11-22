@@ -24,14 +24,24 @@ public:
     const std::vector<Trainer *>& getTrainers();
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
-    void addAction(BaseAction *action);
 
 private:
     bool open;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
+    static customersCounter;
     void clear();
+    void openTrainer(std::vector<std::string> inputArgs);
+    void orderTrainer(int id);
+    void moveCustomer(std::vector<std::string> inputArgs);
+    void closeTrainer(int id);
+    void closeAll();
+    void printWorkoutOptions();
+    void printTrainerStatus(int id);
+    void printActionsLog();
+    void backupStudio();
+    void restore();
 };
 
 #endif

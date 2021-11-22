@@ -10,6 +10,10 @@
 
 using namespace std;
 
+//enum NextAction {
+//    OPEN, ORDER, MOVE, CLOSE, CLOSE_ALL, WORKOUT_OPTIONS, STATUS, LOG, BACKUP, RESTORE
+//};
+
 Studio::Studio(const string &configFilePath) {
     // extract file content to "nextLine" string
     /*ifstream myFile(configFilePath);
@@ -25,6 +29,7 @@ Studio::Studio(const string &configFilePath) {
     }*/
 
     //trainers = nullptr;
+    //customersCounter = 0;
 
 }
 
@@ -46,12 +51,42 @@ const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
 void Studio::start() {
     open = true;
     cout << "Studio is now open!" << endl;
+    string nextAction;
+    vector<string> inputArgs;
+    cin >> nextAction;
+    while (nextAction != "closeall") {
+        // parse input
+        int index;
+        while (!nextAction.empty()) {
+            index = nextAction.find(' ');
+            if (index < string::npos) { // ' ' found
+                inputArgs.push_back(nextAction.substr(0, index));
+                nextAction.erase(0, index + 1);
+            } else {
+                inputArgs.push_back(nextAction); // last argument
+                inputArgs.clear();
+            }
+        }
+
+        string actionName = inputArgs[0];
+
+        if (actionName == "open") openTrainer(inputArgs);
+        else if (actionName == "order") orderTrainer(stoi(inputArgs[1]));
+        else if (actionName == "move") moveCustomer(inputArgs);
+        else if (actionName == "close") closeTrainer(stoi(inputArgs[1]));
+        else if (actionName == "workout_options") printWorkoutOptions();
+        else if (actionName == "status") printTrainerStatus(stoi(inputArgs[1]));
+        else if (actionName == "log") printActionsLog();
+        else if (actionName == "backup") backupStudio();
+        else if (actionName == "restore") restore();
+
+        cin >> nextAction;
+    }
 }
 
 void Studio::close() {
     open = false;
     clear();
-    cout << "Studio is now closed!" << endl;
 }
 
 // Rule of 5
@@ -115,8 +150,6 @@ vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
 
-void Studio::addAction(BaseAction *action) { actionsLog.push_back(action); }
-
 const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
 
 void Studio::clear() {
@@ -128,3 +161,72 @@ void Studio::clear() {
     }
     workout_options.clear();
 }
+
+// region ACTIONS
+void Studio::openTrainer(std::vector<std::string> inputArgs) {
+    int trainerId = stoi(inputArgs[1]);
+    vector<Customer *> customersList;
+    string nextCustomer, name;
+
+    // create all customers from open action
+    for (int i = 2; i < inputArgs.size(); i++) {
+        nextCustomer = inputArgs[i];
+        name = nextCustomer.substr(0, nextCustomer.size() - 4);
+        nextCustomer.erase(0, nextCustomer.size() - 3);
+
+        // create new customer by type
+        if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
+        else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
+        else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
+        else customersList.push_back(new FullBodyCustomer(name, customersCounter));
+        customersCounter++;
+    }
+
+    BaseAction *openTrainer = new OpenTrainer(trainerId, customersList);
+    // TODO: make sure we need to pass *this to actions
+    openTrainer->act(*this);
+    actionsLog.push_back(openTrainer);
+}
+
+void Studio::moveCustomer(std::vector<std::string> inputArgs) {
+    BaseAction *move = new MoveCustomer(stoi(inputArgs[0]), stoi(inputArgs[1]), stoi(inputArgs[2]));
+    move->act(*this);
+    actionsLog.push_back(move);
+}
+
+void Studio::closeTrainer(int id) {
+    BaseAction *close = new Close(id);
+    close->act(*this);
+    actionsLog.push_back(close);
+}
+
+void Studio::printWorkoutOptions() {
+    BaseAction *printWorkoutOptions = new PrintWorkoutOptions();
+    printWorkoutOptions->act(*this);
+    actionsLog.push_back(printWorkoutOptions);
+}
+
+void Studio::printTrainerStatus(int id) {
+    BaseAction *printTrainerStatus = new PrintTrainerStatus(id);
+    printTrainerStatus->act(*this);
+    actionsLog.push_back(printTrainerStatus);
+}
+
+void Studio::printActionsLog() {
+    BaseAction *printActionsLog = new PrintActionsLog();
+    printActionsLog->act(*this);
+    actionsLog.push_back(printActionsLog);
+}
+
+void Studio::backupStudio() {
+    BaseAction *backup = new BackupStudio();
+    backup->act(*this);
+    actionsLog.push_back(backup);
+}
+
+void Studio::restore() {
+    BaseAction *restore = new RestoreStudio();
+    restore->act(*this);
+    actionsLog.push_back(restore);
+}
+// endregion ACTIONS
