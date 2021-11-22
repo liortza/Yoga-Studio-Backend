@@ -12,7 +12,7 @@ using namespace std;
 
 Studio::Studio(const string &configFilePath) {
     // extract file content to "nextLine" string
-    /*ifstream myFile(configFilePath);
+    ifstream myFile(configFilePath);
     vector<string> inputVector;
     string line;
     if (myFile.is_open()) {
@@ -22,11 +22,37 @@ Studio::Studio(const string &configFilePath) {
                 continue;
             else inputVector.push_back(line);
         }
-    }*/
-
-    //trainers = nullptr;
-
+    }
+    string line2 = inputVector[1];
+    for (int i = 0; i < line2.size(); i = i + 2) {
+        int capacity = line2[i] - '0';
+        trainers.push_back(new Trainer(capacity));
+    }
+    for (int i = 2; i < inputVector.size(); i++) {
+        int index = 0;
+        vector<string> workout;
+        for (int j = 0; j < 3 & !inputVector[i].empty(); j++) {
+            index = inputVector[i].find(',');
+            if (index < string::npos) {
+                workout[j] = inputVector[i].substr(0, index);
+                inputVector[i].erase(0, index + 2);
+            }
+        }
+        string name = workout[0];
+        WorkoutType workoutType;
+        if (workout[1] == ("ANAEROBIC"))
+            workoutType = ANAEROBIC;
+        if (workout[1] == ("MIXED"))
+            workoutType = MIXED;
+        if (workout[1] == ("CARDIO"))
+            workoutType = CARDIO;
+        int price = stoi(workout[2]);
+        int id = i;
+        workout_options.push_back(*new Workout(id, name, price, workoutType));
+    }
 }
+
+
 
 //TODO:1. parse input (example) 2. open=false, actionslog>empty vector 3. check if the workouts need to be initialized from the input.
 
