@@ -41,7 +41,16 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
         }
     }
 
-    if (cheapestCardioW != nullptr) workout_ids.push_back(cheapestCardioW->getId());
-    if (expensiveMixW != nullptr) workout_ids.push_back(expensiveMixW->getId());
-    if (cheapestAnaerobicW != nullptr) workout_ids.push_back(cheapestAnaerobicW->getId());
+    if (cheapestCardioW != nullptr) {
+        workout_ids.push_back(cheapestCardioW->getId());
+        pay += cheapestCardioP;
+    }
+    if (expensiveMixW != nullptr) {
+        workout_ids.push_back(expensiveMixW->getId());
+        pay += expensiveMixP;
+    }
+    if (cheapestAnaerobicW != nullptr) {
+        workout_ids.push_back(cheapestAnaerobicW->getId());
+        pay += cheapestCardioP;
+    }
 }
