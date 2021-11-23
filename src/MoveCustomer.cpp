@@ -19,7 +19,7 @@ void MoveCustomer::act(Studio &studio) {
                 Order *order=new Order(dstTrainer);
                 order->act(studio);
                 if (src->getCustomers().size() == 0)
-                    src->closeTrainer();
+                    studio.closeTrainer(srcTrainer);
             }
         }
     } else BaseAction::error("Cannot move customer");

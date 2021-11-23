@@ -24,6 +24,7 @@ public:
     const std::vector<Trainer *>& getTrainers();
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
+    void closeTrainer(int id);
 
 private:
     bool open;
@@ -37,7 +38,6 @@ private:
     void openTrainer(std::vector<std::string> inputArgs);
     void orderTrainer(int id);
     void moveCustomer(std::vector<std::string> inputArgs);
-    void closeTrainer(int id);
     void closeAll();
     void printWorkoutOptions();
     void printTrainerStatus(int id);
