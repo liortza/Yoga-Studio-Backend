@@ -1,4 +1,5 @@
 #include "../include/Action.h"
+#include "../src/Order.cpp"
 
 using namespace std;
 
@@ -7,15 +8,17 @@ MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), 
 void MoveCustomer::act(Studio &studio) {
     Trainer *src = studio.getTrainer(srcTrainer);
     Trainer *dst = studio.getTrainer(dstTrainer);
-    //legal move
+    //legal move, we assume legal move is between ordered trainers
     if (src != nullptr & dst != nullptr && src->isOpen() & dst->isOpen() & dst->getAvailable() >= 1) {
-        for (Customer *srcCustomer: src->getCustomers()) {
-            if (srcCustomer->getId() == id) {
-                src->removeCustomer(id);
-                dst->addCustomer(srcCustomer);
-                if (src->getCustomers().size() == 0)
-                    src->closeTrainer();
-            }
+        if (src->getCustomer(id) != nullptr) {
+            src->removeCustomer(id);
+            dst->addCustomer(src->getCustomer(id));
+            //place order for the new customer
+            Order *order = new Order(dstTrainer);
+            order->act(studio);
+            //adds close src trainer action to studio.actionLog
+            if (src->getCustomers().size() == 0)
+                studio.closeTrainer(srcTrainer);
         }
     } else BaseAction::error("Cannot move customer");
 }

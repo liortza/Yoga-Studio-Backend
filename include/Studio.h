@@ -9,40 +9,62 @@
 #include "BaseAction.h"
 
 
-class Studio{		
+class Studio {
 public:
-	Studio();
+    Studio();
+
     Studio(const std::string &configFilePath);
+
     virtual ~Studio();
+
     Studio(const Studio &other)
-    const Studio& operator=(const Sudio &other);
-    const Studio& operator=(Studio&& other);
+    const
+
+    Studio &operator=(const Sudio &other);
+
+    const Studio &operator=(Studio &&other);
+
     void start();
+
     void close();
+
     int getNumOfTrainers() const;
-    Trainer* getTrainer(int tid);
-    const std::vector<Trainer *>& getTrainers();
-	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
-    std::vector<Workout>& getWorkoutOptions();
+
+    Trainer *getTrainer(int tid);
+
+    const std::vector<Trainer *> &getTrainers();
+
+    const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
+    std::vector<Workout> &getWorkoutOptions();
+
+    void closeTrainer(int id);
 
 private:
     bool open;
-    std::vector<Trainer*> trainers;
+    std::vector<Trainer *> trainers;
     std::vector<Workout> workout_options;
-    std::vector<BaseAction*> actionsLog;
+    std::vector<BaseAction *> actionsLog;
     int customersCounter;
+
     void clear();
 
     //region ACTIONS
     void openTrainer(std::vector<std::string> inputArgs);
+
     void orderTrainer(int id);
+
     void moveCustomer(std::vector<std::string> inputArgs);
-    void closeTrainer(int id);
+
     void closeAll();
+
     void printWorkoutOptions();
+
     void printTrainerStatus(int id);
+
     void printActionsLog();
+
     void backupStudio();
+
     void restore();
     //endregion
 };
