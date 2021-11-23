@@ -17,7 +17,14 @@ public:
 
     int getId() const;
 
+    bool getOrdered();
+
+    void setOrdered(bool set);
+
 protected:
+
+    bool isOrdered;
+
 private:
     const std::string name;
     const int id;

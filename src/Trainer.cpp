@@ -25,18 +25,20 @@ void Trainer::addCustomer(Customer *customer) {
         size++;
     }
     //TODO: throw error if size == capacity?
+    //todo: to check if we need to order for him or to wait to the next order
 }
 
 void Trainer::removeCustomer(int id) {
     // remove from customersList
-    
+
     // remove from ordersList
-    for(OrderPair order:orderList){
-        if(order.first==id){
+    for (OrderPair order: orderList) {
+        if (order.first == id) {
 
         }
     }
-    //TODO: delete element from middle of vector
+    //TODO: to create new vector fot orders and customers
+    //todo: to check if we need to change the field isOrdered
 }
 
 Customer *Trainer::getCustomer(int id) {
@@ -52,10 +54,12 @@ std::vector<OrderPair> &Trainer::getOrders() { return orderList; }
 
 void
 Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
-    if (getCustomer(customer_id) == nullptr) { // place orders of new customers (no duplicates)
+    Customer *customer = getCustomer(customer_id);
+    if (customer!= nullptr && !customer->getOrdered()) { // place orders of new customers (no duplicates)
         for (int workout_id: workout_ids) {
-            OrderPair pair (customer_id, workout_options[workout_id]);
+            OrderPair pair(customer_id, workout_options[workout_id]);
             orderList.push_back(pair);
+            customer->setOrdered(true);
         }
     }
 }
@@ -69,13 +73,15 @@ void Trainer::closeTrainer() {
     customersList.clear();
     size = 0;
     orderList.clear();
-    for (const OrderPair& orderPair: orderList)
+    for (const OrderPair &orderPair: orderList)
+        //todo: to put in the method order(trainer)
         salary += orderPair.second.getPrice();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
+    //todo: erase customers
 }
 
 int Trainer::getSalary() const { return salary; }
 
 bool Trainer::isOpen() { return open; }
 
-int Trainer::getAvailable() {return capacity - size;}
+int Trainer::getAvailable() { return capacity - size; }

@@ -1,7 +1,13 @@
 #include "../include/Customer.h"
 
-Customer::Customer(std::string c_name, int c_id) : name(c_name), id(c_id) {}
+Customer::Customer(std::string c_name, int c_id) : name(c_name), id(c_id), isOrdered(false) {}
 
-std::string Customer::getName() const {return name;}
+std::string Customer::getName() const { return name; }
 
-int Customer::getId() const {return id;}
+int Customer::getId() const { return id; }
+
+bool Customer::getOrdered() { return isOrdered; }
+
+void Customer::setOrdered(bool set) {
+    isOrdered=set;
+}
