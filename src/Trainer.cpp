@@ -25,20 +25,15 @@ void Trainer::addCustomer(Customer *customer) {
         size++;
     }
     //TODO: throw error if size == capacity?
-    //todo: to check if we need to order for him or to wait to the next order
 }
 
 void Trainer::removeCustomer(int id) {
-    // remove from customersList
-
-    // remove from ordersList
-    for (OrderPair order: orderList) {
-        if (order.first == id) {
-
-        }
+    if(getCustomer(id)!= nullptr){
+        customersList=removeCustomerFromVector(customersList, id);
+        orderList= removeOrderFromVector(orderList, id);
+        getCustomer(id)->setOrdered(false);
+        size--;
     }
-    //TODO: to create new vector fot orders and customers
-    //todo: to check if we need to change the field isOrdered
 }
 
 Customer *Trainer::getCustomer(int id) {
@@ -59,6 +54,7 @@ Trainer::order(const int customer_id, const std::vector<int> workout_ids, const 
         for (int workout_id: workout_ids) {
             OrderPair pair(customer_id, workout_options[workout_id]);
             orderList.push_back(pair);
+            salary += pair.second.getPrice();
             customer->setOrdered(true);
         }
     }
@@ -73,9 +69,6 @@ void Trainer::closeTrainer() {
     customersList.clear();
     size = 0;
     orderList.clear();
-    for (const OrderPair &orderPair: orderList)
-        //todo: to put in the method order(trainer)
-        salary += orderPair.second.getPrice();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
     //todo: erase customers
 }
@@ -85,3 +78,19 @@ int Trainer::getSalary() const { return salary; }
 bool Trainer::isOpen() { return open; }
 
 int Trainer::getAvailable() { return capacity - size; }
+
+std::vector<Customer *> Trainer::removeCustomerFromVector(std::vector<Customer *> customersListInput, int removeId) {
+    std::vector<Customer *> CustomersListResult;
+    for(Customer *customer: customersListInput){
+        if(customer->getId()!=removeId)
+            CustomersListResult.push_back(customer);
+    }
+}
+
+std::vector<OrderPair> Trainer::removeOrderFromVector(std::vector<OrderPair> orderListInput, int removeId) {
+    std::vector<OrderPair> OrdersListResult;
+    for(OrderPair order: orderListInput){
+        if(order.first!=removeId)
+            OrdersListResult.push_back(order);
+    }
+}

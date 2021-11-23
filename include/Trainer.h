@@ -34,7 +34,8 @@ private:
     bool open;
     std::vector<Customer*> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order for the trainer - (customer_id, Workout)
-    //std::vector<T> * Shift_left(int start, int shift, std::vector<T>* vector);
+    std::vector<Customer *> removeCustomerFromVector(std::vector<Customer *> customersListInput, int removeId);
+    std::vector<OrderPair> removeOrderFromVector(std::vector<OrderPair> orderListInput, int removeId);
 };
 
 
