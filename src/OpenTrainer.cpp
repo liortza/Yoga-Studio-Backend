@@ -17,7 +17,6 @@ void OpenTrainer::act(Studio &studio) {
         for (Customer *customer: customers)
             trainer->addCustomer(customer);
     }
-    studio.addAction(this);
 }
 
 

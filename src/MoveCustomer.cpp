@@ -18,7 +18,6 @@ void MoveCustomer::act(Studio &studio) {
             }
         }
     } else BaseAction::error("Cannot move customer");
-    studio.addAction(this);
 }
 
 std::string MoveCustomer::toString() const {

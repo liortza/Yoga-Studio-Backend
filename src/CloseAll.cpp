@@ -12,7 +12,6 @@ void CloseAll::act(Studio &studio) {
         }
     }
     BaseAction::complete();
-    studio.addAction(this); // TODO: needed?
     studio.close();
 }
 

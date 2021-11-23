@@ -19,7 +19,6 @@ void Order::act(Studio &studio) {
         }
         BaseAction::complete();
     }
-    studio.addAction(this);
 }
 
 std::string Order::toString() const {
