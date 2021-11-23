@@ -25,25 +25,31 @@ Studio::Studio(const string &configFilePath) {
             else inputVector.push_back(line);
         }
     }
-    string line2 = inputVector[1];
-    int index1;
-    while (!line2.empty()) {
-        index1 = line2.find(',');
-        if (index1 < string::npos) {
-            int capacity = stoi(line2.substr(0, index1));
+
+    // parse input vector
+    string nextLine = inputVector[1];
+    int index;
+    while (!nextLine.empty()) {
+        // trainer's capacity line
+        index = nextLine.find(',');
+        if (index < string::npos) {
+            int capacity = stoi(nextLine.substr(0, index));
             trainers.push_back(new Trainer(capacity));
-            line2.erase(0, index1 + 1);
+            nextLine.erase(0, index + 1);
         }
+        trainers.push_back(new Trainer(stoi(nextLine))); // last capacity
+
+        // workout options
+        vector<string> workout;
         for (int i = 2; i < inputVector.size(); i++) {
-            int index2 = 0;
-            vector<string> workout;
-            for (int j = 0; j < 3; j++) {
-                index2 = inputVector[i].find(',');
-                if (index2 < string::npos) {
-                    workout[j] = inputVector[i].substr(0, index2);
-                    inputVector[i].erase(0, index2 + 2);
-                }
+            for (int j = 0; j < 2; j++) { // name, type
+                index = inputVector[i].find(',');
+                workout[j] = inputVector[i].substr(0, index);
+                inputVector[i].erase(0, index + 2);
             }
+            workout[2] = inputVector[i]; // price
+
+            // create workout
             string name = workout[0];
             WorkoutType workoutType;
             if (workout[1] == ("Anaerobic"))
@@ -53,13 +59,13 @@ Studio::Studio(const string &configFilePath) {
             if (workout[1] == ("Cardio"))
                 workoutType = CARDIO;
             int price = stoi(workout[2]);
-            int id = i - 2;
+            int id = i - 2; // workouts start from index 2 of array, id's start from 0
             workout_options.push_back(*new Workout(id, name, price, workoutType));
-        }//todo:
+        }
     }
-
-    //trainers = nullptr;
-    //customersCounter = 0;
+    // todo: check if need to initialize vector
+    open = true;
+    customersCounter = 0;
 }
 
 // destructor
