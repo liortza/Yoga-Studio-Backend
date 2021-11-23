@@ -26,7 +26,7 @@ Studio::Studio(const string &configFilePath) {
         }
     }
     string line2 = inputVector[1];
-    int index1 = 0;
+    int index1;
     while (!line2.empty()) {
         index1 = line2.find(',');
         if (index1 < string::npos) {
