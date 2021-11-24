@@ -17,5 +17,5 @@ void Close::act(Studio &studio) {
 std::string Close::toString() const {
     if (getStatus() == COMPLETED)
         return "close " + to_string(trainerId) + " Completed";
-    else return "close " + to_string(trainerId) + " Error: " + getErrorMsg();
+    return "close " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
