@@ -3,22 +3,26 @@
 
 #include <string>
 
-enum WorkoutType{
+enum WorkoutType {
     ANAEROBIC, MIXED, CARDIO
 };
 
-class Workout{
+class Workout {
 public:
     Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type);
+
     int getId() const;
+
     std::string getName() const;
+
     int getPrice() const;
+
     WorkoutType getType() const;
-    // TODO: Or Dinary consult
-    //static bool expensiveThan(Workout *const wk1Ptr, Workout *const &wk2Ptr);
+
     static bool expensiveThan(Workout const &wk1, Workout const &wk2);
+
 private:
-	const int id;
+    const int id;
     const std::string name;
     const int price;
     const WorkoutType type;

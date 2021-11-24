@@ -24,7 +24,6 @@ void Trainer::addCustomer(Customer *customer) {
         customersList.push_back(customer);
         size++;
     }
-    //TODO: throw error if size == capacity?
 }
 
 void Trainer::removeCustomer(int id) {
@@ -71,7 +70,6 @@ void Trainer::closeTrainer() {
     size = 0;
     orderList.clear();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
-    //todo: erase customers
 }
 
 int Trainer::getSalary() const { return salary; }
