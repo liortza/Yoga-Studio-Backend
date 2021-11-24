@@ -10,7 +10,8 @@
 
 using namespace std;
 
-// region RULE OF 5
+Studio::Studio() {} // TODO: ??
+
 Studio::Studio(const string &configFilePath) {
 
     // extract file content to "nextLine" string
@@ -68,29 +69,32 @@ Studio::Studio(const string &configFilePath) {
     customersCounter = 0;
 }
 
+// region RULE OF 5
 // destructor
-Studio::~Studio() {
-    if (!trainers.empty()) {
-        for (Trainer *trainer: trainers) delete trainer;
+Studio::~Studio() { clear(); }
+
+// copy constructor
+Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter),
+                                      workout_options(other.workout_options) {
+
+    // TODO: use generic deepCopyDuplicate method
+    for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
+        Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
+        trainers.push_back(myTrainer);
     }
-    if (!actionsLog.empty()) {
-        for (BaseAction *action: actionsLog) delete action;
+    for (BaseAction *action: other.actionsLog) { // deep copy actionsLog
+        BaseAction *myAction = action; // call BaseAction copy constructor
+        actionsLog.push_back(myAction);
     }
 }
 
-// copy constructor
-Studio::Studio(
-        const Studio &other) {
-    open = other.open;
-    for (Trainer *trainerPtr: other.trainers) { // deep copy
-        Trainer *myTrainer = new Trainer(&trainerPtr); // call Trainer copy constructor
-        trainers.push_back(myTrainer);
-    }
-    workout_options = other.workout_options; // assignment operator
-    for (BaseAction *action: other.actionsLog) {
-        BaseAction *myAction(action);
-        actionsLog.push_back(myAction);
-    }
+// move copy constructor
+Studio::Studio(Studio &&other) : open(other.open), customersCounter(other.customersCounter),
+                                 workout_options(other.workout_options), trainers(other.trainers),
+                                 actionsLog(other.actionsLog) {
+    // TODO: copy vectors like i did in the initialization list??
+    other.trainers.clear();
+    other.actionsLog.clear();
 }
 
 // assignment operator
@@ -98,17 +102,17 @@ const Studio &Studio::operator=(const Studio &other) {
     if (this != &other) {
         clear();
         open = other.open;
+        customersCounter = other.customersCounter;
+        workout_options = other.workout_options; // vector assignment operator
 
-        // deep copy trainers
-        for (int i = 0; i < other.getNumOfTrainers(); i++) {
-            trainers.push_back(
-                    new Trainer(other.trainers[i])); // use class Trainer's copy constructor (returns pointer??)
+        // TODO: use generic deepCopyDuplicate method
+        for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
+            Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
+            trainers.push_back(myTrainer);
         }
-        for (int i = 0; i < other.workout_options.size(); i++) {
-            workout_options.push_back(other.workout_options[i]);
-        }
-        for (int i = 0; i < other.actionsLog.size(); i++) {
-            actionsLog.push_back(new BaseAction(other.actionsLog[i]));
+        for (BaseAction *action: other.actionsLog) { // deep copy actionsLog
+            BaseAction *myAction = action; // call BaseAction copy constructor
+            actionsLog.push_back(myAction);
         }
     }
     return *this;
@@ -117,12 +121,15 @@ const Studio &Studio::operator=(const Studio &other) {
 // move assignment operator
 const Studio &Studio::operator=(Studio &&other) {
     clear();
+    // TODO: is this how to steal resources from vectors??
+    // steal other's resources (copy vector of pointers)
     trainers = other.trainers;
     workout_options = other.workout_options;
     actionsLog = other.actionsLog;
-    other.trainers = nullptr;
-    other.workout_options = nullptr;
-    other.actionsLog = nullptr;
+
+    // delete pointers
+    other.trainers.clear();
+    other.actionsLog.clear();
 }
 // endregion
 
@@ -131,10 +138,8 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    for (Trainer *trainerPtr: trainers) {
-        if (trainerPtr->getId() == tid) return trainerPtr;
-    }
-    // TODO: error if doesn't exist? return nullptr?
+    if (tid >= getNumOfTrainers()) return nullptr; // trainer doesn't exist
+    return trainers[tid];
 }
 
 const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
@@ -185,8 +190,6 @@ vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
 
-const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
-
 void Studio::clear() {
     if (!trainers.empty()) {
         for (Trainer *trainer: trainers) delete trainer;
@@ -194,7 +197,6 @@ void Studio::clear() {
     if (!actionsLog.empty()) {
         for (BaseAction *action: actionsLog) delete action;
     }
-    workout_options.clear();
 }
 
 // region ACTIONS

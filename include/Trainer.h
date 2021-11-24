@@ -11,9 +11,13 @@ class Trainer {
 public:
     Trainer(int t_capacity);
 
-    virtual ~Trainer();
-
-    Trainer(const Trainer &other);
+    // region RULE OF 5
+    virtual ~Trainer(); // destructor
+    Trainer(const Trainer &other); // copy constructor
+    Trainer(Trainer &&other); // move copy constructor
+    const Trainer& operator=(const Trainer &other); // assignment operator
+    Trainer& operator=(Trainer &&other); // move assignment operator
+    // endregion
 
     int getCapacity() const;
 

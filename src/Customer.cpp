@@ -10,8 +10,6 @@ int Customer::getId() const { return id; }
 
 bool Customer::getOrdered() { return isOrdered; }
 
-void Customer::setOrdered(bool set) {
-    isOrdered = set;
-}
+void Customer::setOrdered(bool set) { isOrdered = set; }
 
 int Customer::getPay() { return pay; }

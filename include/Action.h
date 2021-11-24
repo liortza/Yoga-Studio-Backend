@@ -17,6 +17,8 @@ class Studio;
 class BaseAction{
 public:
     BaseAction();
+    BaseAction(const BaseAction& other); // copy constructor
+    virtual ~BaseAction(); // destructor
     ActionStatus getStatus() const;
     virtual void act(Studio& studio)=0;
     virtual std::string toString() const=0;
@@ -33,6 +35,8 @@ private:
 class OpenTrainer : public BaseAction {
 public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);
+    OpenTrainer(const OpenTrainer &other); // copy constructor
+    virtual ~OpenTrainer();
     void act(Studio &studio);
     std::string toString() const;
 private:

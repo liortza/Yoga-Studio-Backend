@@ -2,17 +2,19 @@
 
 using namespace std;
 
-BaseAction::BaseAction() {
-    errorMsg = nullptr;
-}
+BaseAction::BaseAction() { errorMsg = nullptr; } // TODO: needed??
 
-ActionStatus BaseAction::getStatus() const {return status;}
+BaseAction::BaseAction(const BaseAction &other) = default;
 
-std::string BaseAction::getErrorMsg() const {return errorMsg;}
+BaseAction::~BaseAction() = default;
 
-void BaseAction::complete() {status = COMPLETED;}
+ActionStatus BaseAction::getStatus() const { return status; }
+
+std::string BaseAction::getErrorMsg() const { return errorMsg; }
+
+void BaseAction::complete() { status = COMPLETED; }
 
 void BaseAction::error(std::string errorMsg) {
-    BaseAction::errorMsg = errorMsg;
+    this->errorMsg = errorMsg; // todo: correct syntax?
     status = ERROR;
 }
