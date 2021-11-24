@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Studio::Studio() {} // TODO: ??
+Studio::Studio() {}
 
 Studio::Studio(const string &configFilePath) {
 
