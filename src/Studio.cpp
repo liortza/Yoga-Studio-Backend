@@ -74,10 +74,8 @@ Studio::Studio(const string &configFilePath) {
 Studio::~Studio() { clear(); }
 
 // copy constructor
-Studio::Studio(const Studio &other) {
-    open = other.open;
-    customersCounter = other.customersCounter;
-    workout_options = other.workout_options; // vector assignment operator
+Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter),
+                                      workout_options(other.workout_options) {
 
     // TODO: use generic deepCopyDuplicate method
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
@@ -140,10 +138,8 @@ int Studio::getNumOfTrainers() const {
 }
 
 Trainer *Studio::getTrainer(int tid) {
-    for (Trainer *trainerPtr: trainers) {
-        if (trainerPtr->getId() == tid) return trainerPtr;
-    }
-    // TODO: error if doesn't exist? return nullptr?
+    if (tid >= getNumOfTrainers()) return nullptr; // trainer doesn't exist
+    return trainers[tid];
 }
 
 const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
@@ -194,13 +190,11 @@ vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
 
-const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
-
 void Studio::clear() {
     if (!trainers.empty()) {
         for (Trainer *trainer: trainers) delete trainer;
     }
-    if (!actionsLog.empty()) { // todo: verify delete is ok on abstract class with no virtual destructor
+    if (!actionsLog.empty()) {
         for (BaseAction *action: actionsLog) delete action;
     }
 }
