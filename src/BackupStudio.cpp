@@ -6,7 +6,7 @@ BackupStudio::BackupStudio() {}
 
 void BackupStudio::act(Studio &studio) {
     //backup: studio's status, trainers, orders, workout options, actions history
-    backup = studio; //assignment operator of studio
+    *backup = studio; //assignment operator of studio
     BaseAction::complete();
 
 }

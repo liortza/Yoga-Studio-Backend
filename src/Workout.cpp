@@ -8,7 +8,6 @@ id(w_id), name(w_name), price(w_price), type(w_type) {};
 int Workout::getId() const {return id;}
 
 std::string Workout::getName() const {return name;}
-//TODO:we need to check if the string initialized on the heap
 
 int Workout::getPrice() const {return price;}
 

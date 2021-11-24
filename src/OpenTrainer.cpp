@@ -17,7 +17,7 @@ OpenTrainer::~OpenTrainer() { for (Customer *customer: customers) delete custome
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
-    if (trainer == nullptr || trainer->isOpen()) //todo: || trainer.getAvailable>= customers.size
+    if (trainer == nullptr || trainer->isOpen())
         BaseAction::error("Workout session does not exist or is already open");
     else {
         trainer->openTrainer();
