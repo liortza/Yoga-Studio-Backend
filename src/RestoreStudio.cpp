@@ -8,10 +8,7 @@ void RestoreStudio::act(Studio &studio) {
     if (backup != nullptr) {
         studio = *backup;//assignment operator of studio
         BaseAction::complete();
-    } else
-        BaseAction::error("No backup available")
-
-
+    } else BaseAction::error("No backup available");
 }
 
 std::string RestoreStudio::toString() const {
