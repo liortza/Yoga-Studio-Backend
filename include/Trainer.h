@@ -15,8 +15,8 @@ public:
     virtual ~Trainer(); // destructor
     Trainer(const Trainer &other); // copy constructor
     Trainer(Trainer &&other); // move copy constructor
-    const Trainer& operator=(const Trainer &other); // assignment operator
-    Trainer& operator=(Trainer &&other); // move assignment operator
+    const Trainer &operator=(const Trainer &other); // assignment operator
+    Trainer &operator=(Trainer &&other); // move assignment operator
     // endregion
 
     int getCapacity() const;
@@ -43,6 +43,8 @@ public:
 
     bool isOpen();
 
+    bool wasOpened();
+
     int getAvailable();
 
 private:
@@ -52,11 +54,12 @@ private:
     int size;
     int salary;
     bool open;
+    bool wasOpen;
     std::vector<Customer *> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order for the trainer - (customer_id, Workout)
-    std::vector<Customer *> removeCustomerFromVector(std::vector<Customer *> customersListInput, int removeId);
+    static std::vector<Customer *> &removeCustomerFromVector(std::vector<Customer *> &customersListInput, int removeId);
 
-    std::vector<OrderPair> removeOrderFromVector(std::vector<OrderPair> orderListInput, int removeId);
+    static std::vector<OrderPair> &removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId);
 };
 
 

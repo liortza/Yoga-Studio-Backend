@@ -6,6 +6,7 @@ using namespace std;
 
 Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
     open = false;
+    wasOpen = false;
     size = 0;
     id = counter;
     counter++;
@@ -24,7 +25,6 @@ void Trainer::addCustomer(Customer *customer) {
         customersList.push_back(customer);
         size++;
     }
-    //TODO: throw error if size == capacity?
 }
 
 void Trainer::removeCustomer(int id) {
@@ -63,24 +63,27 @@ Trainer::order(const int customer_id, const std::vector<int> workout_ids, const 
 
 void Trainer::openTrainer() {
     open = true;
+    wasOpen = true;
 }
 
 void Trainer::closeTrainer() {
     open = false;
+    for (Customer *customer: customersList) delete customer;
     customersList.clear();
     size = 0;
     orderList.clear();
     cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
-    //todo: erase customers
 }
 
 int Trainer::getSalary() const { return salary; }
 
 bool Trainer::isOpen() { return open; }
 
+bool Trainer::wasOpened() { return wasOpen; }
+
 int Trainer::getAvailable() { return capacity - size; }
 
-std::vector<Customer *> Trainer::removeCustomerFromVector(std::vector<Customer *> customersListInput, int removeId) {
+std::vector<Customer *> &Trainer::removeCustomerFromVector(std::vector<Customer *> &customersListInput, int removeId) {
     std::vector<Customer *> CustomersListResult;
     for (Customer *customer: customersListInput) {
         if (customer->getId() != removeId)
@@ -89,7 +92,8 @@ std::vector<Customer *> Trainer::removeCustomerFromVector(std::vector<Customer *
     return CustomersListResult;
 }
 
-std::vector<OrderPair> Trainer::removeOrderFromVector(std::vector<OrderPair> orderListInput, int removeId) {
+// TODO: make sure correct use of vector reference
+std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId) {
     std::vector<OrderPair> OrdersListResult;
     for (OrderPair order: orderListInput) {
         if (order.first != removeId)

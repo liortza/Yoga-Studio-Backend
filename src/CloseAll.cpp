@@ -6,7 +6,7 @@ using namespace std;
 CloseAll::CloseAll() {}
 
 void CloseAll::act(Studio &studio) {
-    for (Trainer *trainer:studio.getTrainers()) { // is this foreach by increasing id order??
+    for (Trainer *trainer: studio.getTrainers()) { // is this foreach by increasing id order??
         if (trainer->isOpen()) { // TODO: update in forum, maybe change to all trainers
             trainer->closeTrainer();
         }
@@ -15,6 +15,4 @@ void CloseAll::act(Studio &studio) {
     studio.close();
 }
 
-std::string CloseAll::toString() const {
-    return "closeall Completed";
-}
+std::string CloseAll::toString() const { return "closeall Completed"; }

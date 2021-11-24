@@ -26,7 +26,6 @@ void MoveCustomer::act(Studio &studio) {
 std::string MoveCustomer::toString() const {
     if (getStatus() == COMPLETED)
         return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " Completed";
-    else
-        return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " Error: " +
-               getErrorMsg();
+    return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " Error: " +
+           getErrorMsg();
 }
