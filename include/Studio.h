@@ -21,34 +21,50 @@ public:
     const Studio& operator=(Studio&& other); // move assignment operator
     // endregion
 
+
     void start();
+
     void close();
+
     int getNumOfTrainers() const;
-    Trainer* getTrainer(int tid);
-    const std::vector<Trainer *>& getTrainers();
-	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
-    std::vector<Workout>& getWorkoutOptions();
+
+    Trainer *getTrainer(int tid);
+
+    const std::vector<Trainer *> &getTrainers();
+
+    const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
+    std::vector<Workout> &getWorkoutOptions();
+
+    void closeTrainer(int id);
 
 private:
     bool open;
-    std::vector<Trainer*> trainers;
+    std::vector<Trainer *> trainers;
     std::vector<Workout> workout_options;
-    std::vector<BaseAction*> actionsLog;
+    std::vector<BaseAction *> actionsLog;
     int customersCounter;
+
     void clear();
 
     // std::vector<T> &deepCopyDuplicate(std::vector<T>); //TODO: generics??
 
     //region ACTIONS
     void openTrainer(std::vector<std::string> inputArgs);
+
     void orderTrainer(int id);
+
     void moveCustomer(std::vector<std::string> inputArgs);
-    void closeTrainer(int id);
+
     void closeAll();
+
     void printWorkoutOptions();
+
     void printTrainerStatus(int id);
+
     void printActionsLog();
+
     void backupStudio();
+
     void restore();
     //endregion
 };
