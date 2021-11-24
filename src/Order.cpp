@@ -24,5 +24,5 @@ void Order::act(Studio &studio) {
 std::string Order::toString() const {
     if (getStatus() == COMPLETED)
         return "order " + to_string(trainerId) + " Completed";
-    else return "order " + to_string(trainerId) + " Error: " + getErrorMsg();
+    return "order " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
