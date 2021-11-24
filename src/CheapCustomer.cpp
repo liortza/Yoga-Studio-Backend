@@ -19,8 +19,7 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
             }
         }
         workout_ids = {id};
-        pay += cheapest;
-        //todo: to make sure there isn't a case which studio has no workouts and than the pay will be MAX
+        pay += cheapest;//assuming at least one workout
         cout << getName() << " Is Doing " << cheapest_workout->getName() << endl;
     }
     return workout_ids;

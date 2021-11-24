@@ -2,7 +2,7 @@
 
 using namespace std;
 
-BaseAction::BaseAction() { errorMsg = nullptr; } // TODO: needed??
+BaseAction::BaseAction() = default;
 
 BaseAction::BaseAction(const BaseAction &other) = default;
 

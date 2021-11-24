@@ -64,7 +64,6 @@ Studio::Studio(const string &configFilePath) {
             workout_options.push_back(*new Workout(id, name, price, workoutType));
         }
     }
-    // todo: check if need to initialize vector
     open = true;
     customersCounter = 0;
 }
@@ -220,7 +219,6 @@ void Studio::openTrainer(std::vector<std::string> inputArgs) {
     }
 
     BaseAction *openTrainer = new OpenTrainer(trainerId, customersList);
-    // TODO: make sure we need to pass *this to actions
     openTrainer->act(*this);
     actionsLog.push_back(openTrainer);
 }
