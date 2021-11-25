@@ -153,15 +153,6 @@ bool Trainer::wasOpened() { return wasOpen; }
 
 int Trainer::getAvailable() { return capacity - size; }
 
-std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId) {
-    std::vector<OrderPair> OrdersListResult;
-    for (OrderPair order: orderListInput) {
-        if (order.first != removeId)
-            OrdersListResult.push_back(order);
-    }
-    return OrdersListResult;
-}
-
 void Trainer::clear() {
     if (!customersList.empty()) {
         for (Customer *customer: customersList) delete customer;
