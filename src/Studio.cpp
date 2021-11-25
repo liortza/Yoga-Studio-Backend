@@ -67,7 +67,7 @@ Studio::Studio(const string &configFilePath) {
             workout_options.push_back(*new Workout(id, name, price, workoutType));
         }
     }
-    open = true;
+    open = false;
     customersCounter = 0;
 }
 
@@ -76,9 +76,8 @@ Studio::Studio(const string &configFilePath) {
 Studio::~Studio() { clear(); }
 
 // copy constructor
-Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter),
-                                      workout_options(other.workout_options) {
-
+Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter) {
+    for (Workout W: other.workout_options) workout_options.push_back(W);
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
         Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
         trainers.push_back(myTrainer);
@@ -90,9 +89,9 @@ Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.c
 }
 
 // move copy constructor
-Studio::Studio(Studio &&other) : open(other.open), customersCounter(other.customersCounter),
-                                 workout_options(other.workout_options), trainers(other.trainers),
+Studio::Studio(Studio &&other) : open(other.open), customersCounter(other.customersCounter), trainers(other.trainers),
                                  actionsLog(other.actionsLog) {
+    for (const Workout &W: other.workout_options) workout_options.push_back(W);
     other.trainers.clear();
     other.actionsLog.clear();
 }
@@ -103,9 +102,8 @@ const Studio &Studio::operator=(const Studio &other) {
         clear();
         open = other.open;
         customersCounter = other.customersCounter;
-        workout_options = other.workout_options; // vector assignment operator
+        for (const Workout &W: other.workout_options) workout_options.push_back(W);
 
-        // TODO: use generic deepCopyDuplicate method
         for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
             Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
             trainers.push_back(myTrainer);
@@ -123,7 +121,7 @@ const Studio &Studio::operator=(Studio &&other) {
     clear();
     open = other.open;
     customersCounter = other.customersCounter;
-    workout_options = other.workout_options;
+    for (const Workout &W: other.workout_options) workout_options.push_back(W);
 
     // steal other's resources (copy vector of pointers)
     trainers = other.trainers;
@@ -203,6 +201,9 @@ void Studio::clear() {
     if (!actionsLog.empty()) {
         for (BaseAction *action: actionsLog) delete action;
     }
+    workout_options.clear();
+    trainers.clear();
+    actionsLog.clear();
 }
 
 // region ACTIONS

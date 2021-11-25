@@ -21,7 +21,8 @@ Trainer::~Trainer() { clear(); }
 
 // copy constructor
 Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), size(other.size), salary(other.salary),
-                                         open(other.open), wasOpen(other.wasOpen), orderList(other.orderList) {
+                                         open(other.open), wasOpen(other.wasOpen) {
+    for (OrderPair pair: other.orderList) orderList.push_back(pair);
     for (Customer *customer: other.customersList) { // deep copy customersList
         Customer *myCustomer = customer; // call Customer default copy constructor
         customersList.push_back(myCustomer);
@@ -30,8 +31,8 @@ Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity),
 
 // move copy constructor
 Trainer::Trainer(Trainer &&other) : id(other.id), capacity(other.capacity), size(other.size), salary(other.salary),
-                                    open(other.open), wasOpen(other.wasOpen), orderList(other.orderList),
-                                    customersList(other.customersList) {
+                                    open(other.open), wasOpen(other.wasOpen), customersList(other.customersList) {
+    for (OrderPair pair: other.orderList) orderList.push_back(pair);
     other.customersList.clear();
 }
 
@@ -44,7 +45,7 @@ const Trainer &Trainer::operator=(const Trainer &other) {
     salary = other.salary;
     open = other.open;
     wasOpen = other.wasOpen;
-    orderList = other.orderList;
+    for (OrderPair pair: other.orderList) orderList.push_back(pair);
     if (!other.customersList.empty()) {
         for (Customer *customer: other.customersList) { // deep copy customersList
             Customer *myCustomer = customer; // call Customer default copy constructor
@@ -63,7 +64,7 @@ Trainer &Trainer::operator=(Trainer &&other) {
     salary = other.salary;
     open = other.open;
     wasOpen = other.wasOpen;
-    orderList = other.orderList;
+    for (const OrderPair &pair: other.orderList) orderList.push_back(pair);
     customersList = other.customersList;
     other.customersList.clear();
     return *this;
@@ -156,6 +157,9 @@ std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &o
 }
 
 void Trainer::clear() {
-    if (!customersList.empty())
+    if (!customersList.empty()) {
         for (Customer *customer: customersList) delete customer;
+    }
+    customersList.clear();
+    orderList.clear();
 }
