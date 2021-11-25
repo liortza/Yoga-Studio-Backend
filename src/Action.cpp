@@ -63,7 +63,7 @@ void Order::act(Studio &studio) {
         BaseAction::error("Trainer does not exist or is not open");
     else {
         vector<Workout> workoutOptions;
-        for(Workout workout:studio.getWorkoutOptions()) workoutOptions.push_back(workout);
+        for (Workout workout: studio.getWorkoutOptions()) workoutOptions.push_back(workout);
         vector<int> workout_ids;
 
         // place order per each customer in trainer
@@ -89,14 +89,14 @@ void MoveCustomer::act(Studio &studio) {
     Trainer *src = studio.getTrainer(srcTrainer);
     Trainer *dst = studio.getTrainer(dstTrainer);
     //legal move, we assume legal move is between ordered trainers
-    if (src != nullptr & dst != nullptr && src->isOpen() & dst->isOpen() & dst->getAvailable() >= 1) {
+    if ((src != nullptr) & (dst != nullptr) && (src->isOpen()) & (dst->isOpen()) & (dst->getAvailable() >= 1)) {
         if (src->getCustomer(id) != nullptr) {
             src->removeCustomer(id);
             dst->addCustomer(src->getCustomer(id));
-            //place order for the new customer
+            // place order for the new customer
             Order *order = new Order(dstTrainer);
             order->act(studio);
-            //adds close src trainer action to studio.actionLog
+            // adds close src trainer action to studio.actionLog
             if (src->getCustomers().size() == 0)
                 studio.closeTrainer(srcTrainer);
         }
@@ -164,6 +164,7 @@ PrintTrainerStatus::PrintTrainerStatus(int id) : trainerId(id) {}
 void PrintTrainerStatus::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
     if (trainer != nullptr && trainer->wasOpened()) {
+        // TODO: change to isOrdered()
         if (trainer->isOpen()) {
             cout << "Trainer " + to_string(trainerId) + " status: open" << endl;
             cout << "Customers:" << endl;

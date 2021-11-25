@@ -5,9 +5,9 @@
 using namespace std;
 
 // region CUSTOMER
-Customer::Customer(std::string c_name, int c_id) : name(c_name), id(c_id), isOrdered(false) {
-    pay = 0;
-}
+Customer::Customer(std::string c_name, int c_id) : isOrdered(false), pay(0), name(c_name), id(c_id) {}
+
+Customer::~Customer() = default;
 
 std::string Customer::getName() const { return name; }
 
@@ -35,7 +35,9 @@ vector<int> SweatyCustomer::order(const vector<Workout> &workout_options) {
     return workout_ids;
 }
 
-std::string SweatyCustomer::toString() const {}
+std::string SweatyCustomer::toString() const {
+    return "name: " + getName() + ", id: " + to_string(getId()), +"type: Sweaty";
+}
 // endregion
 
 // region CHEAP CUSTOMER
@@ -61,7 +63,9 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
     return workout_ids;
 }
 
-std::string CheapCustomer::toString() const {}
+std::string CheapCustomer::toString() const {
+    return "name: " + getName() + ", id: " + to_string(getId()), +"type: Cheap";
+}
 // endregion
 
 // region HEAVY MUSCLE CUSTOMER
@@ -82,8 +86,9 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     return workout_ids;
 }
 
-std::string HeavyMuscleCustomer::toString() const {}
-
+std::string HeavyMuscleCustomer::toString() const {
+    return "name: " + getName() + ", id: " + to_string(getId()), +"type: HeavyMuscle";
+}
 // endregion
 
 // region FULL BODY CUSTOMER
@@ -138,7 +143,10 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
         workout_ids.push_back(cheapestAnaerobicW->getId());
         pay += cheapestCardioP;
     }
+    return workout_ids;
 }
 
-std::string FullBodyCustomer::toString() const {}
+std::string FullBodyCustomer::toString() const {
+    return "name: " + getName() + ", id: " + to_string(getId()), +"type: FullBody";
+}
 // endregion
