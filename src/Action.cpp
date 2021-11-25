@@ -42,7 +42,6 @@ void OpenTrainer::act(Studio &studio) {
         BaseAction::error("Workout session does not exist or is already open");
     else {
         trainer->openTrainer();
-        vector<Workout> &workout_options = studio.getWorkoutOptions();
         for (Customer *customer: customers)
             trainer->addCustomer(customer);
     }
@@ -63,7 +62,8 @@ void Order::act(Studio &studio) {
     if (trainer == nullptr || !trainer->isOpen())
         BaseAction::error("Trainer does not exist or is not open");
     else {
-        vector<Workout> workoutOptions = studio.getWorkoutOptions();
+        vector<Workout> workoutOptions;
+        for(Workout workout:studio.getWorkoutOptions()) workoutOptions.push_back(workout);
         vector<int> workout_ids;
 
         // place order per each customer in trainer
