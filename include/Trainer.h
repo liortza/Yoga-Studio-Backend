@@ -57,9 +57,6 @@ private:
     bool wasOpen;
     std::vector<Customer *> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order for the trainer - (customer_id, Workout)
-    static std::vector<Customer *> &removeCustomerFromVector(std::vector<Customer *> &customersListInput, int removeId);
-
-    static std::vector<OrderPair> &removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId);
 
     void clear();
 };

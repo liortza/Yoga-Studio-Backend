@@ -84,8 +84,23 @@ void Trainer::addCustomer(Customer *customer) {
 
 void Trainer::removeCustomer(int id) {
     if (getCustomer(id) != nullptr) {
-        customersList = removeCustomerFromVector(customersList, id);
-        orderList = removeOrderFromVector(orderList, id);
+
+        // create new customersList without removed customer
+        vector<Customer *> newCustomersList;
+        for (Customer *customer: customersList) {
+            if (customer->getId() != id)
+                newCustomersList.push_back(customer);
+        }
+        customersList.clear();
+        for (Customer *customer:newCustomersList) customersList.push_back(customer); // customersList <- new vector
+
+        vector<OrderPair> newOrderList;
+        for (const OrderPair& order: orderList) {
+            if (order.first != id)
+                newOrderList.push_back(order);
+        }
+        orderList.clear();
+        for (const OrderPair& pair:newOrderList) orderList.push_back(pair); // ordersList <- new vector
         getCustomer(id)->setOrdered(false);
         size--;
         salary -= getCustomer(id)->getPay();
@@ -137,15 +152,6 @@ bool Trainer::isOpen() { return open; }
 bool Trainer::wasOpened() { return wasOpen; }
 
 int Trainer::getAvailable() { return capacity - size; }
-
-std::vector<Customer *> &Trainer::removeCustomerFromVector(std::vector<Customer *> &customersListInput, int removeId) {
-    std::vector<Customer *> CustomersListResult;
-    for (Customer *customer: customersListInput) {
-        if (customer->getId() != removeId)
-            CustomersListResult.push_back(customer);
-    }
-    return CustomersListResult;
-}
 
 std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId) {
     std::vector<OrderPair> OrdersListResult;
