@@ -41,10 +41,10 @@ public:
 
 private:
     bool open;
+    int customersCounter;
     std::vector<Trainer *> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction *> actionsLog;
-    int customersCounter;
 
     void clear();
 

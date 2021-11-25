@@ -9,6 +9,8 @@ class Customer {
 public:
     Customer(std::string c_name, int c_id);
 
+    virtual ~Customer();
+
     virtual std::vector<int> order(const std::vector<Workout> &workout_options) = 0;
 
     virtual std::string toString() const = 0;
@@ -41,7 +43,6 @@ public:
 
     std::string toString() const;
 
-
 private:
 };
 
@@ -54,7 +55,6 @@ public:
 
     std::string toString() const;
 
-
 private:
 };
 
@@ -66,7 +66,6 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
 
     std::string toString() const;
-
 
 private:
 };

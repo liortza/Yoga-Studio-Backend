@@ -11,7 +11,7 @@ Studio::Studio() {
     customersCounter = 0;
 }
 
-Studio::Studio(const string &configFilePath) {
+Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) {
 
     // extract file content to "nextLine" string
     ifstream myFile(configFilePath);
@@ -32,7 +32,7 @@ Studio::Studio(const string &configFilePath) {
     while (!nextLine.empty()) {
         // trainer's capacity line
         index = nextLine.find(',');
-        if (index < string::npos) {
+        if (index != int(string::npos)) { // assuming position is not larger than int
             int capacity = stoi(nextLine.substr(0, index));
             trainers.push_back(new Trainer(capacity));
             nextLine.erase(0, index + 1);
@@ -41,7 +41,7 @@ Studio::Studio(const string &configFilePath) {
 
         // workout options
         vector<string> workout;
-        for (int i = 2; i < inputVector.size(); i++) {
+        for (int i = 2; i < int(inputVector.size()); i++) {
             for (int j = 0; j < 2; j++) { // name, type
                 index = inputVector[i].find(',');
                 workout[j] = inputVector[i].substr(0, index);
@@ -63,8 +63,6 @@ Studio::Studio(const string &configFilePath) {
             workout_options.push_back(*new Workout(id, name, price, workoutType));
         }
     }
-    open = false;
-    customersCounter = 0;
 }
 
 // region RULE OF 5
@@ -142,7 +140,7 @@ void Studio::start() {
         int index;
         while (!nextAction.empty()) {
             index = nextAction.find(' ');
-            if (index < string::npos) { // ' ' found
+            if (index != int(string::npos)) { // ' ' found, assuming position is not larger than int
                 inputArgs.push_back(nextAction.substr(0, index));
                 nextAction.erase(0, index + 1);
             } else {
@@ -210,23 +208,26 @@ void Studio::openTrainer(std::vector<std::string> inputArgs) {
     vector<Customer *> customersList;
     string nextCustomer, name;
 
-    // create all customers from open action
-    for (int i = 2; i < inputArgs.size(); i++) {
-        nextCustomer = inputArgs[i];
-        name = nextCustomer.substr(0, nextCustomer.size() - 4);
-        nextCustomer.erase(0, nextCustomer.size() - 3);
+    if (inputArgs.size() >= 2) { // at least one customer
+        // TODO: check if trainer doesn't exist or is already open (error) - need to create new customers?
+        // create all customers from open action
+        for (int i = 2; i < int(inputArgs.size()); i++) { // assuming input arguments no more than max int
+            nextCustomer = inputArgs[i];
+            name = nextCustomer.substr(0, nextCustomer.size() - 4);
+            nextCustomer.erase(0, nextCustomer.size() - 3);
 
-        // create new customer by type
-        if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
-        else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
-        else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
-        else customersList.push_back(new FullBodyCustomer(name, customersCounter));
-        customersCounter++;
+            // create new customer by type
+            if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
+            else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
+            else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
+            else customersList.push_back(new FullBodyCustomer(name, customersCounter));
+            customersCounter++;
+        }
+
+        BaseAction *openTrainer = new OpenTrainer(trainerId, customersList);
+        openTrainer->act(*this);
+        actionsLog.push_back(openTrainer);
     }
-
-    BaseAction *openTrainer = new OpenTrainer(trainerId, customersList);
-    openTrainer->act(*this);
-    actionsLog.push_back(openTrainer);
 }
 
 void Studio::orderTrainer(int id) {
