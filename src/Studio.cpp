@@ -3,10 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "../include/Workout.h"
-#include "../include/Trainer.h"
-#include "../include/Action.h"
-#include <filesystem>
 
 using namespace std;
 
@@ -130,6 +126,8 @@ const Studio &Studio::operator=(Studio &&other) {
     // delete other's pointers
     other.trainers.clear();
     other.actionsLog.clear();
+
+    return *this;
 }
 // endregion
 
