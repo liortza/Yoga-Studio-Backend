@@ -7,19 +7,20 @@
 #include "Trainer.h"
 #include "Action.h"
 
-class Studio{		
+class BaseAction;
+
+class Studio {
 public:
-	Studio(); // todo: needed?? what do we do in empty constructor?
+    Studio(); // todo: needed?? what do we do in empty constructor?
     Studio(const std::string &configFilePath);
 
     // region RULE OF 5
     virtual ~Studio(); // destructor
     Studio(const Studio &other); // copy constructor
     Studio(Studio &&other); // move copy constructor
-    const Studio& operator=(const Studio &other); // assignment operator
-    const Studio& operator=(Studio&& other); // move assignment operator
+    const Studio &operator=(const Studio &other); // assignment operator
+    const Studio &operator=(Studio &&other); // move assignment operator
     // endregion
-
 
     void start();
 
@@ -44,8 +45,6 @@ private:
     int customersCounter;
 
     void clear();
-
-    // std::vector<T> &deepCopyDuplicate(std::vector<T>); //TODO: generics??
 
     //region ACTIONS
     void openTrainer(std::vector<std::string> inputArgs);

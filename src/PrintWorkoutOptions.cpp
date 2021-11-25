@@ -11,6 +11,4 @@ void PrintWorkoutOptions::act(Studio &studio) {
     }
 }
 
-std::string PrintWorkoutOptions::toString() const {
-    return "workout_options Completed";
-}
+std::string PrintWorkoutOptions::toString() const { return "workout_options Completed"; }
