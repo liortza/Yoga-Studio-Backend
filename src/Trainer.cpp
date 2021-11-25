@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int Trainer::counter = 0; // initialize static counter
+
 Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
     open = false;
     wasOpen = false;
@@ -13,9 +15,7 @@ Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
     salary = 0;
 }
 
-// Rule of 5
-
-
+// region RULE OF 5
 int Trainer::getCapacity() const { return capacity; }
 
 int Trainer::getId() const { return id; }
