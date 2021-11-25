@@ -16,6 +16,60 @@ Trainer::Trainer(int t_capacity) : capacity(t_capacity) {
 }
 
 // region RULE OF 5
+// destructor
+Trainer::~Trainer() { clear(); }
+
+// copy constructor
+Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), size(other.size), salary(other.salary),
+                                         open(other.open), wasOpen(other.wasOpen), orderList(other.orderList) {
+    for (Customer *customer: other.customersList) { // deep copy customersList
+        Customer *myCustomer = customer; // call Customer default copy constructor
+        customersList.push_back(myCustomer);
+    }
+}
+
+// move copy constructor
+Trainer::Trainer(Trainer &&other) : id(other.id), capacity(other.capacity), size(other.size), salary(other.salary),
+                                    open(other.open), wasOpen(other.wasOpen), orderList(other.orderList),
+                                    customersList(other.customersList) {
+    other.customersList.clear();
+}
+
+// assignment operator
+const Trainer &Trainer::operator=(const Trainer &other) {
+    clear();
+    id = other.id;
+    capacity = other.capacity;
+    size = other.size;
+    salary = other.salary;
+    open = other.open;
+    wasOpen = other.wasOpen;
+    orderList = other.orderList;
+    if (!other.customersList.empty()) {
+        for (Customer *customer: other.customersList) { // deep copy customersList
+            Customer *myCustomer = customer; // call Customer default copy constructor
+            customersList.push_back(myCustomer);
+        }
+    }
+    return *this;
+}
+
+// move assignment operator
+Trainer &Trainer::operator=(Trainer &&other) {
+    clear();
+    id = other.id;
+    capacity = other.capacity;
+    size = other.size;
+    salary = other.salary;
+    open = other.open;
+    wasOpen = other.wasOpen;
+    orderList = other.orderList;
+    customersList = other.customersList;
+    other.customersList.clear();
+    return *this;
+}
+// endregion
+
 int Trainer::getCapacity() const { return capacity; }
 
 int Trainer::getId() const { return id; }
@@ -100,4 +154,9 @@ std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &o
             OrdersListResult.push_back(order);
     }
     return OrdersListResult;
+}
+
+void Trainer::clear() {
+    if (!customersList.empty())
+        for (Customer *customer: customersList) delete customer;
 }
