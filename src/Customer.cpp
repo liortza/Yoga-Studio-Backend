@@ -77,7 +77,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     }
 
     sort(order_workouts.begin(), order_workouts.end(), [workout_options](const int &a, const int &b) -> bool {
-        return workout_options[a].getPrice() > workout_options[b].getPrice();
+        return workout_options[a].getPrice() >= workout_options[b].getPrice();
     });
     for (Workout W: order_workouts) {
         workout_ids.push_back(W.getId());
