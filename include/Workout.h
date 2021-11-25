@@ -19,7 +19,7 @@ public:
 
     WorkoutType getType() const;
 
-    static bool expensiveThan(Workout const &wk1, Workout const &wk2);
+    //static bool expensiveThan(Workout const &wk1, Workout const &wk2);
 
 private:
     const int id;

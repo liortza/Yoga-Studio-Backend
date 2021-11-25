@@ -13,10 +13,6 @@ int Workout::getPrice() const {return price;}
 
 WorkoutType Workout::getType() const {return type;}
 
-//bool Workout::expensiveThan(Workout *const wk1Ptr, Workout *const &wk2Ptr) {
-//    return wk1Ptr->getPrice() > wk2Ptr->getPrice();
+//bool Workout::expensiveThan(const Workout &wk1, const Workout &wk2) {
+//    return wk1.getPrice() > wk2.getPrice();
 //}
-
-bool Workout::expensiveThan(const Workout &wk1, const Workout &wk2) {
-    return wk1.getPrice() > wk2.getPrice();
-}

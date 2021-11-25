@@ -146,7 +146,6 @@ std::vector<Customer *> &Trainer::removeCustomerFromVector(std::vector<Customer 
     return CustomersListResult;
 }
 
-// TODO: make sure correct use of vector reference
 std::vector<OrderPair> &Trainer::removeOrderFromVector(std::vector<OrderPair> &orderListInput, int removeId) {
     std::vector<OrderPair> OrdersListResult;
     for (OrderPair order: orderListInput) {
