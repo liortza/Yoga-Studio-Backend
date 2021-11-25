@@ -12,14 +12,14 @@ BaseAction::~BaseAction() = default;
 
 ActionStatus BaseAction::getStatus() const { return status; }
 
-std::string BaseAction::getErrorMsg() const { return errorMsg; }
-
 void BaseAction::complete() { status = COMPLETED; }
 
 void BaseAction::error(std::string errorMsg) {
     this->errorMsg = errorMsg; // todo: correct syntax?
     status = ERROR;
 }
+
+std::string BaseAction::getErrorMsg() const { return errorMsg; }
 // endregion
 
 // region OPENTRAINER

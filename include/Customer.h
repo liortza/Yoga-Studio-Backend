@@ -24,15 +24,12 @@ public:
     int getPay();
 
 protected:
-
     bool isOrdered;
     int pay;
 
 private:
     const std::string name;
     const int id;
-
-
 };
 
 
