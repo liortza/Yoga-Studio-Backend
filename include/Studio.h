@@ -6,7 +6,6 @@
 #include "Workout.h"
 #include "Trainer.h"
 #include "Action.h"
-#include "BaseAction.h"
 
 class Studio{		
 public:
@@ -17,7 +16,7 @@ public:
     virtual ~Studio(); // destructor
     Studio(const Studio &other); // copy constructor
     Studio(Studio &&other); // move copy constructor
-    const Studio& operator=(const Sudio &other); // assignment operator
+    const Studio& operator=(const Studio &other); // assignment operator
     const Studio& operator=(Studio&& other); // move assignment operator
     // endregion
 
