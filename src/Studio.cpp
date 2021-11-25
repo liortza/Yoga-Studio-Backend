@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Studio::Studio() {}
+Studio::Studio() = default;
 
 Studio::Studio(const string &configFilePath) {
 
@@ -76,7 +76,6 @@ Studio::~Studio() { clear(); }
 Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter),
                                       workout_options(other.workout_options) {
 
-    // TODO: use generic deepCopyDuplicate method
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
         Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
         trainers.push_back(myTrainer);
@@ -91,7 +90,6 @@ Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.c
 Studio::Studio(Studio &&other) : open(other.open), customersCounter(other.customersCounter),
                                  workout_options(other.workout_options), trainers(other.trainers),
                                  actionsLog(other.actionsLog) {
-    // TODO: copy vectors like i did in the initialization list??
     other.trainers.clear();
     other.actionsLog.clear();
 }
@@ -120,13 +118,15 @@ const Studio &Studio::operator=(const Studio &other) {
 // move assignment operator
 const Studio &Studio::operator=(Studio &&other) {
     clear();
-    // TODO: is this how to steal resources from vectors??
+    open = other.open;
+    customersCounter = other.customersCounter;
+    workout_options = other.workout_options;
+
     // steal other's resources (copy vector of pointers)
     trainers = other.trainers;
-    workout_options = other.workout_options;
     actionsLog = other.actionsLog;
 
-    // delete pointers
+    // delete other's pointers
     other.trainers.clear();
     other.actionsLog.clear();
 }
