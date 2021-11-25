@@ -11,7 +11,8 @@ class BaseAction;
 
 class Studio {
 public:
-    Studio(); // todo: needed?? what do we do in empty constructor?
+    Studio();
+
     Studio(const std::string &configFilePath);
 
     // region RULE OF 5
@@ -33,6 +34,7 @@ public:
     const std::vector<Trainer *> &getTrainers();
 
     const std::vector<BaseAction *> &getActionsLog() const; // Return a reference to the history of actions
+
     std::vector<Workout> &getWorkoutOptions();
 
     void closeTrainer(int id);

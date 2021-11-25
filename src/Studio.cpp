@@ -10,7 +10,10 @@
 
 using namespace std;
 
-Studio::Studio() = default;
+Studio::Studio() {
+    open = false;
+    customersCounter = 0;
+}
 
 Studio::Studio(const string &configFilePath) {
 
@@ -132,17 +135,6 @@ const Studio &Studio::operator=(Studio &&other) {
 }
 // endregion
 
-int Studio::getNumOfTrainers() const {
-    return trainers.size();
-}
-
-Trainer *Studio::getTrainer(int tid) {
-    if (tid >= getNumOfTrainers()) return nullptr; // trainer doesn't exist
-    return trainers[tid];
-}
-
-const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
-
 void Studio::start() {
     open = true;
     cout << "Studio is now open!" << endl;
@@ -185,9 +177,24 @@ void Studio::close() {
     clear();
 }
 
-vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
+int Studio::getNumOfTrainers() const { return trainers.size(); }
+
+Trainer *Studio::getTrainer(int tid) {
+    if (tid >= getNumOfTrainers()) return nullptr; // trainer doesn't exist
+    return trainers[tid];
+}
+
+const std::vector<Trainer *> &Studio::getTrainers() { return trainers; }
 
 const vector<BaseAction *> &Studio::getActionsLog() const { return actionsLog; }
+
+vector<Workout> &Studio::getWorkoutOptions() { return workout_options; }
+
+void Studio::closeTrainer(int id) {
+    BaseAction *close = new Close(id);
+    close->act(*this);
+    actionsLog.push_back(close);
+}
 
 void Studio::clear() {
     if (!trainers.empty()) {
@@ -233,12 +240,6 @@ void Studio::moveCustomer(std::vector<std::string> inputArgs) {
     BaseAction *move = new MoveCustomer(stoi(inputArgs[0]), stoi(inputArgs[1]), stoi(inputArgs[2]));
     move->act(*this);
     actionsLog.push_back(move);
-}
-
-void Studio::closeTrainer(int id) {
-    BaseAction *close = new Close(id);
-    close->act(*this);
-    actionsLog.push_back(close);
 }
 
 void Studio::closeAll() {

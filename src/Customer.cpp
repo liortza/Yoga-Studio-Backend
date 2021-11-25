@@ -83,9 +83,10 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
         workout_ids.push_back(W.getId());
         pay += W.getPrice();
     }
-
     return workout_ids;
 }
+
+std::string HeavyMuscleCustomer::toString() const {}
 
 // endregion
 
@@ -142,4 +143,6 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
         pay += cheapestCardioP;
     }
 }
+
+std::string FullBodyCustomer::toString() const {}
 // endregion

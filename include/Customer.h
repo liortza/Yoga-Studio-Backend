@@ -80,9 +80,7 @@ public:
 
     std::string toString() const;
 
-
 private:
 };
-
 
 #endif
