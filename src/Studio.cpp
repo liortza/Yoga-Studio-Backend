@@ -20,6 +20,7 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
     if (myFile.is_open()) {
         while (myFile) {
             getline(myFile, line);
+            line.erase(line.size() - 2); // all lines end with "\r"
             if (line.empty() || line[0] == '#')
                 continue;
             else inputVector.push_back(line);
@@ -32,10 +33,12 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
     while (!nextLine.empty()) {
         // trainer's capacity line
         index = nextLine.find(',');
-        if (index != int(string::npos)) { // assuming position is not larger than int
-            int capacity = stoi(nextLine.substr(0, index));
+        int capacity;
+        while (index != int(string::npos)) {
+            capacity = stoi(nextLine.substr(0, index));
             trainers.push_back(new Trainer(capacity));
             nextLine.erase(0, index + 1);
+            index = nextLine.find(',');
         }
         trainers.push_back(new Trainer(stoi(nextLine))); // last capacity
 
@@ -71,7 +74,7 @@ Studio::~Studio() { clear(); }
 
 // copy constructor
 Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter) {
-    for (Workout W: other.workout_options) workout_options.push_back(W);
+    for (const Workout& W: other.workout_options) workout_options.push_back(W);
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
         Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
         trainers.push_back(myTrainer);
