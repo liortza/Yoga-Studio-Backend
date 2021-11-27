@@ -39,8 +39,8 @@ void OpenTrainer::act(Studio &studio) {
         BaseAction::error("Workout session does not exist or is already open");
     else {
         trainer->openTrainer();
-        for (Customer *customer: customers)
-            trainer->addCustomer(customer);
+        for (Customer *customer: customers) trainer->addCustomer(customer);
+        BaseAction::complete();
     }
 }
 
