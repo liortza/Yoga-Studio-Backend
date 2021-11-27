@@ -65,7 +65,7 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
 
         price = stoi(nextLine);
         id = i - 2; // workouts start from index 2 of array, id's start from 0
-        cout << to_string(id) << name << to_string(price) << type << endl;
+        cout << "id: " << to_string(id) << " name:" << name << " price: " << to_string(price) << " type enum: " << type << endl;
         workout_options.push_back(*new Workout(id, name, price, type));
     }
 }
@@ -139,7 +139,7 @@ void Studio::start() {
     cout << "Studio is now open!" << endl;
     string nextAction;
     vector<string> inputArgs;
-    cin >> nextAction;
+    getline(cin,nextAction) ;
     while (nextAction != "closeall") {
         // parse input
         int index;
@@ -150,7 +150,7 @@ void Studio::start() {
                 nextAction.erase(0, index + 1);
             } else {
                 inputArgs.push_back(nextAction); // last argument
-                inputArgs.clear();
+                nextAction.clear();
             }
         }
 
@@ -166,7 +166,8 @@ void Studio::start() {
         else if (actionName == "backup") backupStudio();
         else if (actionName == "restore") restore();
 
-        cin >> nextAction;
+        inputArgs.clear();
+        getline(cin,nextAction) ;
     }
     closeAll();
 }
@@ -200,7 +201,8 @@ void Studio::clear() {
         for (Trainer *trainer: trainers) delete trainer;
     }
     if (!actionsLog.empty()) {
-        for (BaseAction *action: actionsLog) delete action;
+        for (BaseAction *action: actionsLog) delete action ;
+
     }
     workout_options.clear();
     trainers.clear();

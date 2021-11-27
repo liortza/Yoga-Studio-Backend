@@ -33,9 +33,6 @@ OpenTrainer::OpenTrainer(const OpenTrainer &other) : trainerId(other.trainerId) 
     }
 }
 
-//destructor
-OpenTrainer::~OpenTrainer() { for (Customer *customer: customers) delete customer; }
-
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
     if (trainer == nullptr || trainer->isOpen())
