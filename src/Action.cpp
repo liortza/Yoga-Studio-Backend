@@ -3,7 +3,7 @@
 using namespace std;
 extern Studio *backup;
 
-// region BASEACTION
+// region BASE_ACTION
 BaseAction::BaseAction() = default;
 
 BaseAction::BaseAction(const BaseAction &other) = default;
@@ -22,7 +22,7 @@ void BaseAction::error(std::string errorMsg) {
 std::string BaseAction::getErrorMsg() const { return errorMsg; }
 // endregion
 
-// region OPENTRAINER
+// region OPEN_TRAINER
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {}
 
 // copy constructor
@@ -32,9 +32,6 @@ OpenTrainer::OpenTrainer(const OpenTrainer &other) : trainerId(other.trainerId) 
         customers.push_back(myCustomer);
     }
 }
-
-//destructor
-OpenTrainer::~OpenTrainer() { for (Customer *customer: customers) delete customer; }
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
@@ -82,7 +79,7 @@ std::string Order::toString() const {
 }
 // endregion
 
-// region MOVECUSTOMER
+// region MOVE_CUSTOMER
 MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), dstTrainer(dst), id(customerId) {}
 
 void MoveCustomer::act(Studio &studio) {
@@ -131,7 +128,7 @@ std::string Close::toString() const {
 }
 // endregion
 
-// region CLOSEALL
+// region CLOSE_ALL
 CloseAll::CloseAll() {}
 
 void CloseAll::act(Studio &studio) {
@@ -145,7 +142,7 @@ void CloseAll::act(Studio &studio) {
 std::string CloseAll::toString() const { return "closeall Completed"; }
 // endregion
 
-// region PRINTWORKOUTOPTIONS
+// region PRINT_WORKOUT_OPTIONS
 PrintWorkoutOptions::PrintWorkoutOptions() {}
 
 void PrintWorkoutOptions::act(Studio &studio) {
@@ -158,7 +155,7 @@ void PrintWorkoutOptions::act(Studio &studio) {
 std::string PrintWorkoutOptions::toString() const { return "workout_options Completed"; }
 // endregion
 
-// region PRINTTRAINERSTATUS
+// region PRINT_TRAINER_STATUS
 PrintTrainerStatus::PrintTrainerStatus(int id) : trainerId(id) {}
 
 void PrintTrainerStatus::act(Studio &studio) {
@@ -185,7 +182,7 @@ std::string PrintTrainerStatus::toString() const {
 }
 // endregion
 
-// region PRINTACTIONSLOG
+// region PRINT_ACTIONS_LOG
 PrintActionsLog::PrintActionsLog() {}
 
 void PrintActionsLog::act(Studio &studio) {
@@ -197,7 +194,7 @@ void PrintActionsLog::act(Studio &studio) {
 std::string PrintActionsLog::toString() const { return "log Completed"; }
 // endregion
 
-// region BACKUPSTUDIO
+// region BACKUP_STUDIO
 BackupStudio::BackupStudio() {}
 
 void BackupStudio::act(Studio &studio) {
@@ -212,7 +209,7 @@ std::string BackupStudio::toString() const {
 }
 // endregion
 
-// region RESTORESTUDIO
+// region RESTORE_STUDIO
 RestoreStudio::RestoreStudio() {}
 
 void RestoreStudio::act(Studio &studio) {

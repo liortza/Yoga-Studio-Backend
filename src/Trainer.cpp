@@ -142,7 +142,7 @@ void Trainer::closeTrainer() {
     customersList.clear();
     size = 0;
     orderList.clear();
-    cout << "Trainer " << id << "closed. Salary " << salary << "NIS" << endl;
+    cout << "Trainer " << id << " closed. Salary " << salary << "NIS" << endl;
 }
 
 int Trainer::getSalary() const { return salary; }

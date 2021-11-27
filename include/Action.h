@@ -7,25 +7,32 @@
 #include "Trainer.h"
 #include "Studio.h"
 
-enum ActionStatus{
+enum ActionStatus {
     COMPLETED, ERROR
 };
 
 //Forward declaration
 class Studio;
 
-class BaseAction{
+class BaseAction {
 public:
     BaseAction();
-    BaseAction(const BaseAction& other); // copy constructor
+
+    BaseAction(const BaseAction &other); // copy constructor
     virtual ~BaseAction(); // destructor
     ActionStatus getStatus() const;
-    virtual void act(Studio& studio)=0;
-    virtual std::string toString() const=0;
+
+    virtual void act(Studio &studio) = 0;
+
+    virtual std::string toString() const = 0;
+
 protected:
     void complete();
+
     void error(std::string errorMsg);
+
     std::string getErrorMsg() const;
+
 private:
     std::string errorMsg;
     ActionStatus status;
@@ -35,21 +42,27 @@ private:
 class OpenTrainer : public BaseAction {
 public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);
+
     OpenTrainer(const OpenTrainer &other); // copy constructor
-    virtual ~OpenTrainer();
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
-	const int trainerId;
-	std::vector<Customer *> customers;
+    const int trainerId;
+    std::vector<Customer *> customers;
 };
 
 
 class Order : public BaseAction {
 public:
     Order(int id);
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
     const int trainerId;
 };
@@ -58,8 +71,11 @@ private:
 class MoveCustomer : public BaseAction {
 public:
     MoveCustomer(int src, int dst, int customerId);
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
     const int srcTrainer;
     const int dstTrainer;
@@ -70,8 +86,11 @@ private:
 class Close : public BaseAction {
 public:
     Close(int id);
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
     const int trainerId;
 };
@@ -80,8 +99,11 @@ private:
 class CloseAll : public BaseAction {
 public:
     CloseAll();
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
 };
 
@@ -89,8 +111,11 @@ private:
 class PrintWorkoutOptions : public BaseAction {
 public:
     PrintWorkoutOptions();
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
 };
 
@@ -98,8 +123,11 @@ private:
 class PrintTrainerStatus : public BaseAction {
 public:
     PrintTrainerStatus(int id);
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
     const int trainerId;
 };
@@ -108,8 +136,11 @@ private:
 class PrintActionsLog : public BaseAction {
 public:
     PrintActionsLog();
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
 };
 
@@ -117,8 +148,11 @@ private:
 class BackupStudio : public BaseAction {
 public:
     BackupStudio();
+
     void act(Studio &studio);
+
     std::string toString() const;
+
 private:
 };
 
@@ -126,7 +160,9 @@ private:
 class RestoreStudio : public BaseAction {
 public:
     RestoreStudio();
+
     void act(Studio &studio);
+
     std::string toString() const;
 
 };
