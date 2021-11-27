@@ -65,7 +65,7 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
 
         price = stoi(nextLine);
         id = i - 2; // workouts start from index 2 of array, id's start from 0
-        workout_options.push_back(*new Workout(id, name, price, type));
+        workout_options.push_back(Workout(id, name, price, type));
     }
 }
 
