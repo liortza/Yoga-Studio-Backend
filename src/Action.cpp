@@ -99,21 +99,23 @@ MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), 
 void MoveCustomer::act(Studio &studio) {
     Trainer *src = studio.getTrainer(srcTrainer);
     Trainer *dst = studio.getTrainer(dstTrainer);
+
+    Customer *customer;
+    if (src != nullptr) customer = src->getCustomer(id);
+
     //legal move, we assume move is between two ordered trainers
-    if ((src != nullptr) & (dst != nullptr) && (src->isOpen()) & (dst->isOpen()) & (dst->getAvailable() >= 1)) {
-        Customer *customer = src->getCustomer(id);
-        if (customer != nullptr) { // customer found in src trainer
-            src->removeCustomer(id);
-            dst->addCustomer(customer);
+    if ((src != nullptr) & (dst != nullptr) & (customer != nullptr) &&
+        (src->isOpen()) & (dst->isOpen()) & (dst->getAvailable() >= 1)) {
+        src->removeCustomer(id);
+        dst->addCustomer(customer);
 
-            // place order for new customer in dst
-            vector<int> workout_ids;
-            workout_ids = customer->order(studio.getWorkoutOptions());
-            dst->order(customer->getId(), workout_ids, studio.getWorkoutOptions());
+        // place order for new customer in dst
+        vector<int> workout_ids;
+        workout_ids = customer->order(studio.getWorkoutOptions());
+        dst->order(customer->getId(), workout_ids, studio.getWorkoutOptions());
 
-            // adds close src trainer action to studio.actionLog
-            if (src->getCustomers().size() == 0) studio.closeTrainer(srcTrainer);
-        }
+        // adds close src trainer action to studio.actionLog
+        if (src->getCustomers().size() == 0) studio.closeTrainer(srcTrainer);
     } else BaseAction::error("Cannot move customer");
 }
 
