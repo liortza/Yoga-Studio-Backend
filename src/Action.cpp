@@ -116,6 +116,8 @@ void MoveCustomer::act(Studio &studio) {
 
         // adds close src trainer action to studio.actionLog
         if (src->getCustomers().size() == 0) studio.closeTrainer(srcTrainer);
+
+        BaseAction::complete();
     } else BaseAction::error("Cannot move customer");
 }
 
