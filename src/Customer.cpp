@@ -57,14 +57,14 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
             }
         }
         workout_ids = {id};
-        pay += cheapest;//assuming at least one workout
+        pay += cheapest; // assuming at least one workout
         cout << getName() << " Is Doing " << cheapest_workout->getName() << endl;
     }
     return workout_ids;
 }
 
 std::string CheapCustomer::toString() const {
-    return "name: " + getName() + ", id: " + to_string(getId()), +"type: Cheap";
+    return "name: " + getName() + ", id: " + to_string(getId()) + ", type: Cheap";
 }
 // endregion
 
@@ -82,7 +82,10 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     sort(workout_ids.begin(), workout_ids.end(), [&workout_options](const int &a, const int &b) {
         return workout_options[a].getPrice() >= workout_options[b].getPrice();
     });
-    for (int i: workout_ids) { pay += workout_options[i].getPrice(); }
+    for (int id: workout_ids) {
+        pay += workout_options[id].getPrice();
+        cout << getName() << " Is Doing " << workout_options[id].getName() << endl;
+    }
     return workout_ids;
 }
 
@@ -134,14 +137,17 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
     if (cheapestCardioW != nullptr) {
         workout_ids.push_back(cheapestCardioW->getId());
         pay += cheapestCardioP;
+        cout << getName() << " Is Doing " << cheapestCardioW->getName() << endl;
     }
     if (expensiveMixW != nullptr) {
         workout_ids.push_back(expensiveMixW->getId());
         pay += expensiveMixP;
+        cout << getName() << " Is Doing " << expensiveMixW->getName() << endl;
     }
     if (cheapestAnaerobicW != nullptr) {
         workout_ids.push_back(cheapestAnaerobicW->getId());
         pay += cheapestCardioP;
+        cout << getName() << " Is Doing " << cheapestAnaerobicW->getName() << endl;
     }
     return workout_ids;
 }

@@ -65,8 +65,6 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
 
         price = stoi(nextLine);
         id = i - 2; // workouts start from index 2 of array, id's start from 0
-        cout << "id: " << to_string(id) << " name:" << name << " price: " << to_string(price) << " type enum: " << type
-             << endl;
         workout_options.push_back(*new Workout(id, name, price, type));
     }
 }
@@ -223,7 +221,7 @@ void Studio::openTrainer(std::vector<std::string> inputArgs) {
             if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
             else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
             else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
-            else customersList.push_back(new FullBodyCustomer(name, customersCounter));
+            else if (nextCustomer == "fbd") customersList.push_back(new FullBodyCustomer(name, customersCounter));
             customersCounter++;
         }
 
