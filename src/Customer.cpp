@@ -31,7 +31,6 @@ vector<int> SweatyCustomer::order(const vector<Workout> &workout_options) {
         if (W.getType() == CARDIO) {
             workout_ids.push_back(W.getId());
             pay += W.getPrice();
-            cout << getName() << " Is Doing " << W.getName() << endl;
         }
     }
     return workout_ids;
@@ -59,7 +58,6 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
     }
     workout_ids = {id};
     pay += cheapest; // assuming at least one workout
-    cout << getName() << " Is Doing " << name << endl;
     return workout_ids;
 }
 
@@ -84,7 +82,6 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
     });
     for (int id: workout_ids) {
         pay += workout_options[id].getPrice();
-        cout << getName() << " Is Doing " << workout_options[id].getName() << endl;
     }
     return workout_ids;
 }
@@ -138,17 +135,14 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
     if (cheapestCardioP != INT32_MAX) {
         workout_ids.push_back(cardioId);
         pay += cheapestCardioP;
-        cout << getName() << " Is Doing " << cardioName << endl;
     }
     if (expensiveMixP != INT32_MIN) {
         workout_ids.push_back(mixId);
         pay += expensiveMixP;
-        cout << getName() << " Is Doing " << mixName << endl;
     }
     if (cheapestAnaerobicP != INT32_MAX) {
         workout_ids.push_back(anaerobicId);
         pay += cheapestAnaerobicP;
-        cout << getName() << " Is Doing " << anaerobicName << endl;
     }
     return workout_ids;
 }

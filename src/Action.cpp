@@ -70,6 +70,18 @@ void Order::act(Studio &studio) {
                 trainer->order(customer->getId(), workout_ids, workoutOptions);
             }
         }
+
+        // iterate through trainer's orderList and print
+        vector<OrderPair> ordersVector;
+        for (OrderPair orderPair: trainer->getOrders()) ordersVector.push_back(orderPair);
+
+        Customer *currentCustomer;
+        Workout *currentWorkout;
+        for (int i = 0; i < int(ordersVector.size()); i++) {
+            currentCustomer = trainer->getCustomer(ordersVector[i].first);
+            currentWorkout = &ordersVector[i].second;
+            cout << currentCustomer->getName() << " Is Doing " << currentWorkout->getName() << endl;
+        }
         BaseAction::complete();
     }
 }
@@ -94,11 +106,13 @@ void MoveCustomer::act(Studio &studio) {
             src->removeCustomer(id);
             dst->addCustomer(customer);
 
-            Order *order = new Order(dstTrainer); // place order for the new customer
-            order->act(studio);
+            // place order for new customer in dst
+            vector<int> workout_ids;
+            workout_ids = customer->order(studio.getWorkoutOptions());
+            dst->order(customer->getId(), workout_ids, studio.getWorkoutOptions());
 
-            if (src->getCustomers().size() == 0) // adds close src trainer action to studio.actionLog
-                studio.closeTrainer(srcTrainer);
+            // adds close src trainer action to studio.actionLog
+            if (src->getCustomers().size() == 0) studio.closeTrainer(srcTrainer);
         }
     } else BaseAction::error("Cannot move customer");
 }
