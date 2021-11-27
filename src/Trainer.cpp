@@ -23,9 +23,8 @@ Trainer::~Trainer() { clear(); }
 Trainer::Trainer(const Trainer &other) : id(other.id), capacity(other.capacity), size(other.size), salary(other.salary),
                                          open(other.open), wasOpen(other.wasOpen) {
     for (OrderPair pair: other.orderList) orderList.push_back(pair);
-    for (Customer *customer: other.customersList) { // deep copy customersList
-        Customer *myCustomer = customer; // call Customer default copy constructor
-        customersList.push_back(myCustomer);
+    for (Customer *C: other.customersList) { // deep copy customersList
+        customersList.push_back(C->clone());
     }
 }
 
@@ -47,9 +46,8 @@ const Trainer &Trainer::operator=(const Trainer &other) {
     wasOpen = other.wasOpen;
     for (OrderPair pair: other.orderList) orderList.push_back(pair);
     if (!other.customersList.empty()) {
-        for (Customer *customer: other.customersList) { // deep copy customersList
-            Customer *myCustomer = customer; // call Customer default copy constructor
-            customersList.push_back(myCustomer);
+        for (Customer *C: other.customersList) { // deep copy customersList
+            customersList.push_back(C->clone());
         }
     }
     return *this;

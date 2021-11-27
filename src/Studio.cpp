@@ -77,12 +77,10 @@ Studio::~Studio() { clear(); }
 Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter) {
     for (const Workout &W: other.workout_options) workout_options.push_back(W);
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
-        Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
-        trainers.push_back(myTrainer);
+        trainers.push_back(new Trainer(*trainerPtr)); // call Trainer copy constructor
     }
     for (BaseAction *action: other.actionsLog) { // deep copy actionsLog
-        BaseAction *myAction = action; // call BaseAction copy constructor
-        actionsLog.push_back(myAction);
+        actionsLog.push_back(action->clone());
     }
 }
 
@@ -103,12 +101,10 @@ const Studio &Studio::operator=(const Studio &other) {
         for (const Workout &W: other.workout_options) workout_options.push_back(W);
 
         for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
-            Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
-            trainers.push_back(myTrainer);
+            trainers.push_back(new Trainer(*trainerPtr)); // call Trainer copy constructor
         }
         for (BaseAction *action: other.actionsLog) { // deep copy actionsLog
-            BaseAction *myAction = action; // call BaseAction copy constructor
-            actionsLog.push_back(myAction);
+            actionsLog.push_back(action->clone());
         }
     }
     return *this;

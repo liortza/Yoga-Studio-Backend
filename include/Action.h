@@ -17,10 +17,11 @@ class Studio;
 class BaseAction {
 public:
     BaseAction();
-
-    BaseAction(const BaseAction &other); // copy constructor
+//    BaseAction(const BaseAction &other); // copy constructor
     virtual ~BaseAction(); // destructor
     ActionStatus getStatus() const;
+
+    virtual BaseAction *clone() = 0;
 
     virtual void act(Studio &studio) = 0;
 
@@ -45,6 +46,10 @@ public:
 
     OpenTrainer(const OpenTrainer &other); // copy constructor
 
+    virtual ~OpenTrainer();
+
+    virtual BaseAction *clone();
+
     void act(Studio &studio);
 
     std::string toString() const;
@@ -63,6 +68,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
     const int trainerId;
 };
@@ -75,6 +82,8 @@ public:
     void act(Studio &studio);
 
     std::string toString() const;
+
+    virtual BaseAction *clone();
 
 private:
     const int srcTrainer;
@@ -91,6 +100,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
     const int trainerId;
 };
@@ -104,6 +115,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
 };
 
@@ -116,6 +129,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
 };
 
@@ -127,6 +142,8 @@ public:
     void act(Studio &studio);
 
     std::string toString() const;
+
+    virtual BaseAction *clone();
 
 private:
     const int trainerId;
@@ -141,6 +158,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
 };
 
@@ -153,6 +172,8 @@ public:
 
     std::string toString() const;
 
+    virtual BaseAction *clone();
+
 private:
 };
 
@@ -164,6 +185,8 @@ public:
     void act(Studio &studio);
 
     std::string toString() const;
+
+    virtual BaseAction *clone();
 
 };
 

@@ -7,6 +7,9 @@ using namespace std;
 // region CUSTOMER
 Customer::Customer(std::string c_name, int c_id) : isOrdered(false), pay(0), name(c_name), id(c_id) {}
 
+//Customer::Customer(const Customer &other) : isOrdered(other.isOrdered), pay(other.pay), name(other.name),
+//                                            id(other.id) {}
+
 Customer::~Customer() = default;
 
 std::string Customer::getName() const { return name; }
@@ -39,6 +42,10 @@ vector<int> SweatyCustomer::order(const vector<Workout> &workout_options) {
 std::string SweatyCustomer::toString() const {
     return "name: " + getName() + ", id: " + to_string(getId()) + " type: Sweaty";
 }
+
+Customer *SweatyCustomer::clone() {
+    return new SweatyCustomer(getName(), getId());
+}
 // endregion
 
 // region CHEAP CUSTOMER
@@ -64,6 +71,10 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
 std::string CheapCustomer::toString() const {
     return "name: " + getName() + ", id: " + to_string(getId()) + ", type: Cheap";
 }
+
+Customer *CheapCustomer::clone() {
+    return new CheapCustomer(getName(), getId());
+}
 // endregion
 
 // region HEAVY MUSCLE CUSTOMER
@@ -88,6 +99,10 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
 
 std::string HeavyMuscleCustomer::toString() const {
     return "name: " + getName() + ", id: " + to_string(getId()) + " type: HeavyMuscle";
+}
+
+Customer *HeavyMuscleCustomer::clone() {
+    return new HeavyMuscleCustomer(getName(), getId());
 }
 // endregion
 
@@ -149,5 +164,9 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 
 std::string FullBodyCustomer::toString() const {
     return "name: " + getName() + ", id: " + to_string(getId()) + " type: FullBody";
+}
+
+Customer *FullBodyCustomer::clone() {
+    return new FullBodyCustomer(getName(), getId());
 }
 // endregion

@@ -6,7 +6,7 @@ extern Studio *backup;
 // region BASE_ACTION
 BaseAction::BaseAction() = default;
 
-BaseAction::BaseAction(const BaseAction &other) = default;
+//BaseAction::BaseAction(const BaseAction &other) = default;
 
 BaseAction::~BaseAction() = default;
 
@@ -26,12 +26,14 @@ std::string BaseAction::getErrorMsg() const { return errorMsg; }
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList) : trainerId(id), customers(customersList) {}
 
 // copy constructor
-OpenTrainer::OpenTrainer(const OpenTrainer &other) : trainerId(other.trainerId) {
-    for (Customer *customer: other.customers) { // deep copy customers
-        Customer *myCustomer = customer; // call Customer default copy constructor
-        customers.push_back(myCustomer);
-    }
-}
+//OpenTrainer::OpenTrainer(const OpenTrainer &other) : trainerId(other.trainerId) {
+//    for (Customer *customer: other.customers) { // deep copy customers
+//        Customer *myCustomer = customer; // call Customer default copy constructor
+//        customers.push_back(myCustomer);
+//    }
+//}
+
+OpenTrainer::~OpenTrainer() { for (Customer *C: customers) delete C; }
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
@@ -39,7 +41,7 @@ void OpenTrainer::act(Studio &studio) {
         BaseAction::error("Workout session does not exist or is already open");
     else {
         trainer->openTrainer();
-        for (Customer *customer: customers) trainer->addCustomer(customer);
+        for (Customer *C: customers) { trainer->addCustomer(C->clone()); }
         BaseAction::complete();
     }
 }
@@ -48,6 +50,12 @@ std::string OpenTrainer::toString() const {
     if (getStatus() == COMPLETED)
         return "open " + to_string(trainerId) + " Completed";
     return "open " + to_string(trainerId) + " Error: " + getErrorMsg();
+}
+
+BaseAction *OpenTrainer::clone() {
+    vector<Customer *> newCustomers;
+    for (Customer *C: customers) newCustomers.push_back(C->clone());
+    return new OpenTrainer(trainerId, newCustomers);
 }
 // endregion
 
@@ -91,6 +99,10 @@ std::string Order::toString() const {
         return "order " + to_string(trainerId) + " Completed";
     return "order " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
+
+BaseAction *Order::clone() {
+    return new Order(trainerId);
+}
 // endregion
 
 // region MOVE_CUSTOMER
@@ -127,6 +139,10 @@ std::string MoveCustomer::toString() const {
     return "move " + to_string(srcTrainer) + " " + to_string(dstTrainer) + " " + to_string(id) + " Error: " +
            getErrorMsg();
 }
+
+BaseAction *MoveCustomer::clone() {
+    return new MoveCustomer(srcTrainer, dstTrainer, id);
+}
 // endregion
 
 // region CLOSE
@@ -147,6 +163,10 @@ std::string Close::toString() const {
         return "close " + to_string(trainerId) + " Completed";
     return "close " + to_string(trainerId) + " Error: " + getErrorMsg();
 }
+
+BaseAction *Close::clone() {
+    return new Close(trainerId);
+}
 // endregion
 
 // region CLOSE_ALL
@@ -161,6 +181,8 @@ void CloseAll::act(Studio &studio) {
 }
 
 std::string CloseAll::toString() const { return "closeall Completed"; }
+
+BaseAction *CloseAll::clone() { return new CloseAll(); }
 // endregion
 
 // region PRINT_WORKOUT_OPTIONS
@@ -178,6 +200,8 @@ void PrintWorkoutOptions::act(Studio &studio) {
 }
 
 std::string PrintWorkoutOptions::toString() const { return "workout_options Completed"; }
+
+BaseAction *PrintWorkoutOptions::clone() { return new PrintWorkoutOptions(); }
 // endregion
 
 // region PRINT_TRAINER_STATUS
@@ -205,6 +229,8 @@ void PrintTrainerStatus::act(Studio &studio) {
 std::string PrintTrainerStatus::toString() const {
     return "status " + to_string(trainerId) + " Completed";
 }
+
+BaseAction *PrintTrainerStatus::clone() { return new PrintTrainerStatus(trainerId); }
 // endregion
 
 // region PRINT_ACTIONS_LOG
@@ -217,6 +243,8 @@ void PrintActionsLog::act(Studio &studio) {
 }
 
 std::string PrintActionsLog::toString() const { return "log Completed"; }
+
+BaseAction *PrintActionsLog::clone() { return new PrintActionsLog(); }
 // endregion
 
 // region BACKUP_STUDIO
@@ -224,21 +252,24 @@ BackupStudio::BackupStudio() {}
 
 void BackupStudio::act(Studio &studio) {
     //backup: studio's status, trainers, orders, workout options, actions history
-    *backup = studio; // Studio assignment operator
+    if (!backup) backup = new Studio(studio); // Studio copy constructor
+    else *backup = studio; // Studio assignment operator
     BaseAction::complete();
 }
 
 std::string BackupStudio::toString() const {
     return "backup Completed"; //never results in an error
 }
+
+BaseAction *BackupStudio::clone() { return new BackupStudio(); }
 // endregion
 
 // region RESTORE_STUDIO
 RestoreStudio::RestoreStudio() {}
 
 void RestoreStudio::act(Studio &studio) {
-    if (backup != nullptr) {
-        studio = *backup;//assignment operator of studio
+    if (backup) {
+        studio = *backup; // Studio assignment operator
         BaseAction::complete();
     } else BaseAction::error("No backup available");
 }
@@ -248,4 +279,6 @@ std::string RestoreStudio::toString() const {
         return "restore Completed";
     return "restore Error: " + getErrorMsg();
 }
+
+BaseAction *RestoreStudio::clone() { return new RestoreStudio(); }
 // endregion

@@ -9,7 +9,11 @@ class Customer {
 public:
     Customer(std::string c_name, int c_id);
 
+//    Customer(const Customer &other);
+
     virtual ~Customer();
+
+    virtual Customer *clone() = 0;
 
     virtual std::vector<int> order(const std::vector<Workout> &workout_options) = 0;
 
@@ -45,6 +49,8 @@ public:
 
     std::string toString() const;
 
+    virtual Customer *clone();
+
 private:
 };
 
@@ -56,6 +62,8 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
 
     std::string toString() const;
+
+    virtual Customer *clone();
 
 private:
 };
@@ -69,6 +77,8 @@ public:
 
     std::string toString() const;
 
+    virtual Customer *clone();
+
 private:
 };
 
@@ -80,6 +90,8 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
 
     std::string toString() const;
+
+    virtual Customer *clone();
 
 private:
 };
