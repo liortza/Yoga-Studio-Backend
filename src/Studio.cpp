@@ -20,7 +20,6 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
     if (myFile.is_open()) {
         while (myFile) {
             getline(myFile, line);
-            line.erase(line.size() - 2); // all lines end with "\r"
             if (line.empty() || line[0] == '#')
                 continue;
             else inputVector.push_back(line);
@@ -28,43 +27,46 @@ Studio::Studio(const string &configFilePath) : open(false), customersCounter(0) 
     }
 
     // parse input vector
-    string nextLine = inputVector[1];
+    line = inputVector[1];
     int index;
-    while (!nextLine.empty()) {
-        // trainer's capacity line
-        index = nextLine.find(',');
-        int capacity;
-        while (index != int(string::npos)) {
-            capacity = stoi(nextLine.substr(0, index));
-            trainers.push_back(new Trainer(capacity));
-            nextLine.erase(0, index + 1);
-            index = nextLine.find(',');
-        }
-        trainers.push_back(new Trainer(stoi(nextLine))); // last capacity
 
-        // workout options
-        vector<string> workout;
-        for (int i = 2; i < int(inputVector.size()); i++) {
-            for (int j = 0; j < 2; j++) { // name, type
-                index = inputVector[i].find(',');
-                workout[j] = inputVector[i].substr(0, index);
-                inputVector[i].erase(0, index + 2);
-            }
-            workout[2] = inputVector[i]; // price
+    // initialize trainers
+    index = line.find(',');
+    int capacity;
+    while (index != int(string::npos)) {
+        capacity = stoi(line.substr(0, index));
+        trainers.push_back(new Trainer(capacity));
+        line.erase(0, index + 1);
+        index = line.find(',');
+    }
+    trainers.push_back(new Trainer(stoi(line))); // last capacity
 
-            // create workout
-            string name = workout[0];
-            WorkoutType workoutType;
-            if (workout[1] == ("Anaerobic"))
-                workoutType = ANAEROBIC;
-            if (workout[1] == ("Mixed"))
-                workoutType = MIXED;
-            if (workout[1] == ("Cardio"))
-                workoutType = CARDIO;
-            int price = stoi(workout[2]);
-            int id = i - 2; // workouts start from index 2 of array, id's start from 0
-            workout_options.push_back(*new Workout(id, name, price, workoutType));
-        }
+    //initialize workouts
+    string nextLine, name, s_type;
+    int id, price;
+    WorkoutType type;
+
+    for (int i = 2; i < int(inputVector.size()); i++) { // workouts start from 3'rd line
+        nextLine = inputVector[i];
+
+        index = nextLine.find(','); // name
+        name = nextLine.substr(0, index);
+        nextLine.erase(0, index + 2);
+
+        index = nextLine.find(','); // type
+        s_type = nextLine.substr(0, index);
+        if (s_type == ("Anaerobic"))
+            type = ANAEROBIC;
+        if (s_type == ("Mixed"))
+            type = MIXED;
+        if (s_type == ("Cardio"))
+            type = CARDIO;
+        nextLine.erase(0, index + 2);
+
+        price = stoi(nextLine);
+        id = i - 2; // workouts start from index 2 of array, id's start from 0
+        cout << to_string(id) << name << to_string(price) << type << endl;
+        workout_options.push_back(*new Workout(id, name, price, type));
     }
 }
 
@@ -74,7 +76,7 @@ Studio::~Studio() { clear(); }
 
 // copy constructor
 Studio::Studio(const Studio &other) : open(other.open), customersCounter(other.customersCounter) {
-    for (const Workout& W: other.workout_options) workout_options.push_back(W);
+    for (const Workout &W: other.workout_options) workout_options.push_back(W);
     for (Trainer *trainerPtr: other.trainers) { // deep copy trainers
         Trainer *myTrainer = trainerPtr; // call Trainer copy constructor
         trainers.push_back(myTrainer);
