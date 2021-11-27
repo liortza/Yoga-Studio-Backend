@@ -98,12 +98,9 @@ FullBodyCustomer::FullBodyCustomer(std::string name, int id) : Customer(name, id
 std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_options) {
     vector<int> workout_ids;
 
-    int cheapestCardioP = INT32_MAX;
-    Workout *cheapestCardioW;
-    int expensiveMixP = INT32_MIN;
-    Workout *expensiveMixW;
-    int cheapestAnaerobicP = INT32_MAX;
-    Workout *cheapestAnaerobicW;
+    int cheapestCardioP = INT32_MAX, expensiveMixP = INT32_MIN, cheapestAnaerobicP = INT32_MAX;
+    int cardioId, mixId, anaerobicId;
+    string cardioName, mixName, anaerobicName;
 
     // find workouts to order
     for (Workout W: workout_options) {
@@ -111,41 +108,44 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
             case CARDIO: {
                 if (W.getPrice() < cheapestCardioP) {
                     cheapestCardioP = W.getPrice();
-                    cheapestCardioW = &W;
+                    cardioId = W.getId();
+                    cardioName = W.getName();
                 }
                 break;
             }
             case MIXED: {
                 if (W.getPrice() > expensiveMixP) {
                     expensiveMixP = W.getPrice();
-                    expensiveMixW = &W;
+                    mixId = W.getId();
+                    mixName = W.getName();
                 }
                 break;
             }
             case ANAEROBIC: {
                 if (W.getPrice() < cheapestAnaerobicP) {
                     cheapestAnaerobicP = W.getPrice();
-                    cheapestAnaerobicW = &W;
+                    anaerobicId = W.getId();
+                    anaerobicName = W.getName();
                 }
                 break;
             }
         }
     }
 
-    if (cheapestCardioW != nullptr) {
-        workout_ids.push_back(cheapestCardioW->getId());
+    if (cheapestCardioP != INT32_MAX) {
+        workout_ids.push_back(cardioId);
         pay += cheapestCardioP;
-        cout << getName() << " Is Doing " << cheapestCardioW->getName() << endl;
+        cout << getName() << " Is Doing " << cardioName << endl;
     }
-    if (expensiveMixW != nullptr) {
-        workout_ids.push_back(expensiveMixW->getId());
+    if (expensiveMixP != INT32_MIN) {
+        workout_ids.push_back(mixId);
         pay += expensiveMixP;
-        cout << getName() << " Is Doing " << expensiveMixW->getName() << endl;
+        cout << getName() << " Is Doing " << mixName << endl;
     }
-    if (cheapestAnaerobicW != nullptr) {
-        workout_ids.push_back(cheapestAnaerobicW->getId());
-        pay += cheapestCardioP;
-        cout << getName() << " Is Doing " << cheapestAnaerobicW->getName() << endl;
+    if (cheapestAnaerobicP != INT32_MAX) {
+        workout_ids.push_back(anaerobicId);
+        pay += cheapestAnaerobicP;
+        cout << getName() << " Is Doing " << anaerobicName << endl;
     }
     return workout_ids;
 }
