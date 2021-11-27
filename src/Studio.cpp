@@ -238,7 +238,7 @@ void Studio::orderTrainer(int id) {
 }
 
 void Studio::moveCustomer(std::vector<std::string> inputArgs) {
-    BaseAction *move = new MoveCustomer(stoi(inputArgs[0]), stoi(inputArgs[1]), stoi(inputArgs[2]));
+    BaseAction *move = new MoveCustomer(stoi(inputArgs[1]), stoi(inputArgs[2]), stoi(inputArgs[3]));
     move->act(*this);
     actionsLog.push_back(move);
 }

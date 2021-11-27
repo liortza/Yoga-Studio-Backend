@@ -13,11 +13,13 @@ std::string Customer::getName() const { return name; }
 
 int Customer::getId() const { return id; }
 
-bool Customer::getOrdered() { return isOrdered; }
+bool Customer::getOrdered() const { return isOrdered; }
 
 void Customer::setOrdered(bool set) { isOrdered = set; }
 
 int Customer::getPay() { return pay; }
+
+void Customer::resetPay() { pay = 0; }
 // endregion
 
 // region SWEATY CUSTOMER
@@ -36,7 +38,7 @@ vector<int> SweatyCustomer::order(const vector<Workout> &workout_options) {
 }
 
 std::string SweatyCustomer::toString() const {
-    return "name: " + getName() + ", id: " + to_string(getId()), +"type: Sweaty";
+    return "name: " + getName() + ", id: " + to_string(getId()) + " type: Sweaty";
 }
 // endregion
 
@@ -88,7 +90,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
 }
 
 std::string HeavyMuscleCustomer::toString() const {
-    return "name: " + getName() + ", id: " + to_string(getId()), +"type: HeavyMuscle";
+    return "name: " + getName() + ", id: " + to_string(getId()) + " type: HeavyMuscle";
 }
 // endregion
 
@@ -132,6 +134,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
         }
     }
 
+    // add chosen workouts
     if (cheapestCardioP != INT32_MAX) {
         workout_ids.push_back(cardioId);
         pay += cheapestCardioP;
@@ -151,6 +154,6 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 }
 
 std::string FullBodyCustomer::toString() const {
-    return "name: " + getName() + ", id: " + to_string(getId()), +"type: FullBody";
+    return "name: " + getName() + ", id: " + to_string(getId()) + " type: FullBody";
 }
 // endregion

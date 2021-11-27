@@ -83,7 +83,12 @@ void Trainer::addCustomer(Customer *customer) {
 }
 
 void Trainer::removeCustomer(int id) {
-    if (getCustomer(id) != nullptr) {
+    Customer *toRemove = getCustomer(id);
+    if (toRemove != nullptr) {
+        toRemove->setOrdered(false);
+        salary -= toRemove->getPay();
+        toRemove->resetPay();
+        size--;
 
         // create new customersList without removed customer
         vector<Customer *> newCustomersList;
@@ -94,6 +99,7 @@ void Trainer::removeCustomer(int id) {
         customersList.clear();
         for (Customer *customer:newCustomersList) customersList.push_back(customer); // customersList <- new vector
 
+        // create new orderList without removed customer's orders
         vector<OrderPair> newOrderList;
         for (const OrderPair& order: orderList) {
             if (order.first != id)
@@ -101,9 +107,6 @@ void Trainer::removeCustomer(int id) {
         }
         orderList.clear();
         for (const OrderPair& pair:newOrderList) orderList.push_back(pair); // ordersList <- new vector
-        getCustomer(id)->setOrdered(false);
-        size--;
-        salary -= getCustomer(id)->getPay();
     }
 }
 
@@ -121,7 +124,7 @@ std::vector<OrderPair> &Trainer::getOrders() { return orderList; }
 void
 Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
     Customer *customer = getCustomer(customer_id);
-    if (customer != nullptr && !customer->getOrdered()) { // place orders of new customers (no duplicates)
+    if (customer != nullptr) {
         salary += customer->getPay();
         for (int workout_id: workout_ids) {
             OrderPair pair(customer_id, workout_options[workout_id]);

@@ -63,10 +63,12 @@ void Order::act(Studio &studio) {
         for (Workout workout: studio.getWorkoutOptions()) workoutOptions.push_back(workout);
         vector<int> workout_ids;
 
-        // place order per each customer in trainer
+        // place orders of new customers (no duplicates)
         for (Customer *customer: trainer->getCustomers()) {
-            workout_ids = customer->order(workoutOptions);
-            trainer->order(customer->getId(), workout_ids, workoutOptions);
+            if (!customer->getOrdered()) {
+                workout_ids = customer->order(workoutOptions);
+                trainer->order(customer->getId(), workout_ids, workoutOptions);
+            }
         }
         BaseAction::complete();
     }
@@ -85,16 +87,17 @@ MoveCustomer::MoveCustomer(int src, int dst, int customerId) : srcTrainer(src), 
 void MoveCustomer::act(Studio &studio) {
     Trainer *src = studio.getTrainer(srcTrainer);
     Trainer *dst = studio.getTrainer(dstTrainer);
-    //legal move, we assume legal move is between ordered trainers
+    //legal move, we assume move is between two ordered trainers
     if ((src != nullptr) & (dst != nullptr) && (src->isOpen()) & (dst->isOpen()) & (dst->getAvailable() >= 1)) {
-        if (src->getCustomer(id) != nullptr) {
+        Customer *customer = src->getCustomer(id);
+        if (customer != nullptr) { // customer found in src trainer
             src->removeCustomer(id);
-            dst->addCustomer(src->getCustomer(id));
-            // place order for the new customer
-            Order *order = new Order(dstTrainer);
+            dst->addCustomer(customer);
+
+            Order *order = new Order(dstTrainer); // place order for the new customer
             order->act(studio);
-            // adds close src trainer action to studio.actionLog
-            if (src->getCustomers().size() == 0)
+
+            if (src->getCustomers().size() == 0) // adds close src trainer action to studio.actionLog
                 studio.closeTrainer(srcTrainer);
         }
     } else BaseAction::error("Cannot move customer");

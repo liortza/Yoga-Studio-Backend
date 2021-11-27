@@ -19,11 +19,13 @@ public:
 
     int getId() const;
 
-    bool getOrdered();
+    bool getOrdered() const;
 
     void setOrdered(bool set);
 
     int getPay();
+
+    void resetPay();
 
 protected:
     bool isOrdered;
