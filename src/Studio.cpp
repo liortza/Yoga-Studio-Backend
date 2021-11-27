@@ -131,6 +131,7 @@ const Studio &Studio::operator=(Studio &&other) {
 
     return *this;
 }
+
 // endregion
 
 void Studio::start() {
@@ -154,7 +155,6 @@ void Studio::start() {
         }
 
         string actionName = inputArgs[0];
-
         if (actionName == "open") openTrainer(inputArgs);
         else if (actionName == "order") orderTrainer(stoi(inputArgs[1]));
         else if (actionName == "move") moveCustomer(inputArgs);

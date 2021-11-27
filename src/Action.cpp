@@ -167,8 +167,12 @@ std::string CloseAll::toString() const { return "closeall Completed"; }
 PrintWorkoutOptions::PrintWorkoutOptions() {}
 
 void PrintWorkoutOptions::act(Studio &studio) {
-    for (Workout workout: studio.getWorkoutOptions()) {
-        cout << workout.getName() << ", " << workout.getType() << ", " << workout.getPrice() << std::endl;
+    string type;
+    for (Workout W: studio.getWorkoutOptions()) {
+        if (W.getType() == ANAEROBIC) type = "Anaerobic";
+        else if (W.getType() == MIXED) type = "Mixed";
+        else type = "Cardio";
+        cout << W.getName() << ", " << type << ", " << W.getPrice() << std::endl;
         BaseAction::complete();
     }
 }
@@ -220,9 +224,8 @@ BackupStudio::BackupStudio() {}
 
 void BackupStudio::act(Studio &studio) {
     //backup: studio's status, trainers, orders, workout options, actions history
-    *backup = studio; //assignment operator of studio
+    *backup = studio; // Studio assignment operator
     BaseAction::complete();
-
 }
 
 std::string BackupStudio::toString() const {
