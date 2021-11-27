@@ -19,14 +19,11 @@ public:
 
     WorkoutType getType() const;
 
-    //static bool expensiveThan(Workout const &wk1, Workout const &wk2);
-
 private:
     const int id;
     const std::string name;
     const int price;
     const WorkoutType type;
 };
-
 
 #endif
