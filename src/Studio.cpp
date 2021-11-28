@@ -267,8 +267,8 @@ void Studio::printActionsLog() {
 
 void Studio::backupStudio() {
     BaseAction *backup = new BackupStudio();
-    backup->act(*this);
     actionsLog.push_back(backup);
+    backup->act(*this);
 }
 
 void Studio::restore() {
