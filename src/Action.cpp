@@ -28,7 +28,7 @@ OpenTrainer::~OpenTrainer() { for (Customer *C: customers) delete C; }
 
 void OpenTrainer::act(Studio &studio) {
     Trainer *trainer = studio.getTrainer(trainerId);
-    if (trainer == nullptr || trainer->isOpen()) {
+    if (trainer == nullptr || trainer->isOpen() || customers.empty()) {
         BaseAction::error("Error: Trainer does not exist or is already open");
         cout << "Error: Trainer does not exist or is already open" << endl;
     } else {

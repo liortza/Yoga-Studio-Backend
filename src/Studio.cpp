@@ -202,23 +202,25 @@ void Studio::clear() {
 // region ACTIONS
 void Studio::openTrainer(std::vector<std::string> inputArgs) {
     int trainerId = stoi(inputArgs[1]);
+    Trainer *trainer = getTrainer(trainerId);
     vector<Customer *> customersList;
     string nextCustomer, name;
+    int capacity = trainer->getCapacity();
 
-    if (inputArgs.size() >= 2) { // at least one customer
-        // TODO: check if trainer doesn't exist or is already open (error) - need to create new customers?
-        // create all customers from open action
-        for (int i = 2; i < int(inputArgs.size()); i++) { // assuming input arguments no more than max int
-            nextCustomer = inputArgs[i];
-            name = nextCustomer.substr(0, nextCustomer.size() - 4);
-            nextCustomer.erase(0, nextCustomer.size() - 3);
+    if (inputArgs.size() > 2) { // at least one customer
+        if (trainer != nullptr && !trainer->isOpen()) { // create all customers from open action if action is legal
+            for (int i = 2; (i < int(inputArgs.size())) & (i - 2 < capacity ); i++) { // assuming input arguments no more than max int
+                nextCustomer = inputArgs[i];
+                name = nextCustomer.substr(0, nextCustomer.size() - 4);
+                nextCustomer.erase(0, nextCustomer.size() - 3);
 
-            // create new customer by type
-            if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
-            else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
-            else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
-            else if (nextCustomer == "fbd") customersList.push_back(new FullBodyCustomer(name, customersCounter));
-            customersCounter++;
+                // create new customer by type
+                if (nextCustomer == "swt") customersList.push_back(new SweatyCustomer(name, customersCounter));
+                else if (nextCustomer == "chp") customersList.push_back(new CheapCustomer(name, customersCounter));
+                else if (nextCustomer == "mcl") customersList.push_back(new HeavyMuscleCustomer(name, customersCounter));
+                else if (nextCustomer == "fbd") customersList.push_back(new FullBodyCustomer(name, customersCounter));
+                customersCounter++;
+            }
         }
 
         BaseAction *openTrainer = new OpenTrainer(trainerId, customersList);
